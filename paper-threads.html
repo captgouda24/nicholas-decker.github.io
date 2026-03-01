@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="paper threads by nicholas decker - in-depth discussions of economics papers" />
+  <title>paper threads - nicholas decker</title>
+  <style>
+    body {
+      line-height: 1.6;
+      font-size: 18px;
+      padding: 0 10px;
+      margin: 40px auto;
+      max-width: 700px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    a:link, a:visited { color: blue; }
+    h1 { text-align: center; margin-bottom: 0.2em; }
+    .subtitle { text-align: center; font-size: medium; margin-top: 0; margin-bottom: 30px; }
+    .nav { display: flex; gap: 20px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
+    .nav a { cursor: pointer; padding: 5px 10px; border-radius: 3px; text-decoration: none; }
+    .nav a.active { background: #eee; font-weight: bold; }
+    .letters, .decades { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 25px; }
+    .letters a, .decades a { cursor: pointer; padding: 3px 8px; border-radius: 3px; text-decoration: none; font-size: 14px; }
+    .letters a:hover, .decades a:hover, .letters a.active, .decades a.active { background: #eee; }
+    .group-header { font-style: italic; font-size: 18px; margin: 25px 0 10px 0; border-bottom: 1px solid #ddd; padding-bottom: 5px; }
+    .paper { margin-bottom: 12px; }
+    .paper-title { cursor: pointer; }
+    .paper-title:hover { text-decoration: underline; }
+    .paper-meta { color: #666; font-size: 14px; margin-left: 5px; }
+    .thread { display: none; margin: 15px 0 25px 20px; padding-left: 15px; border-left: 3px solid #ddd; }
+    .thread.open { display: block; }
+    .tweet { margin-bottom: 20px; }
+    .tweet-text { white-space: pre-wrap; word-wrap: break-word; }
+    .tweet-img { max-width: 100%; height: auto; margin-top: 10px; border-radius: 8px; cursor: pointer; }
+    .tweet-img:hover { opacity: 0.9; }
+    .tweet-meta { font-size: 12px; color: #888; margin-top: 5px; }
+    .stats { text-align: center; font-size: 14px; color: #666; margin-bottom: 20px; }
+    .back { margin-bottom: 20px; }
+    .hidden { display: none; }
+    @media (max-width: 500px) {
+      body { margin: 20px auto; font-size: 16px; }
+      .thread { margin-left: 10px; padding-left: 10px; }
+    }
+    .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 1000; cursor: pointer; }
+    .lightbox img { max-width: 95%; max-height: 95%; object-fit: contain; }
+    .lightbox.open { display: flex; }
+  </style>
+</head>
+<body>
+  <a href="index.html"><h1>paper threads</h1></a>
+  <p class="subtitle">in-depth twitter threads on economics papers</p>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="nav">
+    <a id="nav-author" class="active" onclick="showView('author')">by author</a>
+    <a id="nav-year" onclick="showView('year')">by year</a>
+  </div>
+
+  <div id="letters" class="letters"></div>
+  <div id="decades" class="decades hidden"></div>
+
+  <div id="papers"></div>
+
+  <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <img id="lightbox-img" src="" alt="" />
+  </div>
+
+  <script>
+    let data = null;
+    let currentView = 'author';
+    let currentFilter = null;
+    let openPaperId = null;
+
+    async function init() {
+      const resp = await fetch('paper-threads/papers-indexed.json');
+      data = await resp.json();
+
+      document.getElementById('stats').textContent =
+        data.stats.totalPapers + ' papers \u00b7 ' +
+        data.stats.yearRange.min + '\u2013' + data.stats.yearRange.max;
+
+      buildFilters();
+      render();
+    }
+
+    function buildFilters() {
+      const letters = Object.keys(data.authorGroups).sort();
+      const lettersEl = document.getElementById('letters');
+      lettersEl.innerHTML = letters.map(l =>
+        '<a onclick="filterBy(\'' + l + '\')">' + l + '</a>'
+      ).join('');
+
+      const decades = Object.keys(data.yearGroups);
+      const decadesEl = document.getElementById('decades');
+      decadesEl.innerHTML = decades.map(d =>
+        '<a onclick="filterBy(\'' + d + '\')">' + d + '</a>'
+      ).join('');
+    }
+
+    function showView(view) {
+      currentView = view;
+      currentFilter = null;
+      openPaperId = null;
+
+      document.getElementById('nav-author').className = view === 'author' ? 'active' : '';
+      document.getElementById('nav-year').className = view === 'year' ? 'active' : '';
+      document.getElementById('letters').className = view === 'author' ? 'letters' : 'letters hidden';
+      document.getElementById('decades').className = view === 'year' ? 'decades' : 'decades hidden';
+
+      // Clear active filter highlights
+      document.querySelectorAll('.letters a, .decades a').forEach(a => a.className = '');
+
+      render();
+    }
+
+    function filterBy(filter) {
+      currentFilter = filter;
+      openPaperId = null;
+
+      // Highlight active filter
+      const container = currentView === 'author' ? 'letters' : 'decades';
+      document.querySelectorAll('#' + container + ' a').forEach(a => {
+        a.className = a.textContent === filter ? 'active' : '';
+      });
+
+      render();
+    }
+
+    function render() {
+      const container = document.getElementById('papers');
+      const groups = currentView === 'author' ? data.authorGroups : data.yearGroups;
+      const order = currentView === 'author' ? data.byAuthorOrder : data.byYearOrder;
+
+      let html = '';
+
+      if (currentFilter) {
+        // Show only filtered group
+        const ids = groups[currentFilter] || [];
+        html += renderGroup(currentFilter, ids);
+      } else {
+        // Show all groups
+        const groupKeys = currentView === 'author'
+          ? Object.keys(groups).sort()
+          : Object.keys(groups);
+
+        for (const key of groupKeys) {
+          html += renderGroup(key, groups[key]);
+        }
+      }
+
+      container.innerHTML = html;
+    }
+
+    function renderGroup(label, paperIds) {
+      let html = '<div class="group-header">' + label + '</div>';
+
+      for (const id of paperIds) {
+        const p = data.papers[id];
+        const isOpen = openPaperId === id;
+
+        html += '<div class="paper">';
+        html += '<div class="paper-title" onclick="togglePaper(' + id + ')">';
+        html += escapeHtml(p.authors);
+        if (p.year) html += ' (' + p.year + ')';
+        if (p.title) html += ', \u201c' + escapeHtml(p.title) + '\u201d';
+        html += '<span class="paper-meta">[' + p.threadLength + ' tweets]</span>';
+        html += '</div>';
+
+        html += '<div class="thread' + (isOpen ? ' open' : '') + '" id="thread-' + id + '">';
+        if (isOpen) {
+          html += renderThread(p);
+        }
+        html += '</div>';
+        html += '</div>';
+      }
+
+      return html;
+    }
+
+    function togglePaper(id) {
+      if (openPaperId === id) {
+        openPaperId = null;
+        document.getElementById('thread-' + id).className = 'thread';
+        document.getElementById('thread-' + id).innerHTML = '';
+      } else {
+        // Close previous
+        if (openPaperId !== null) {
+          const prev = document.getElementById('thread-' + openPaperId);
+          if (prev) {
+            prev.className = 'thread';
+            prev.innerHTML = '';
+          }
+        }
+        // Open new
+        openPaperId = id;
+        const el = document.getElementById('thread-' + id);
+        el.innerHTML = renderThread(data.papers[id]);
+        el.className = 'thread open';
+
+        // Scroll into view
+        setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+      }
+    }
+
+    function renderThread(paper) {
+      let html = '';
+      for (const tweet of paper.thread) {
+        html += '<div class="tweet">';
+        html += '<div class="tweet-text">' + formatTweetText(tweet.text) + '</div>';
+
+        for (const media of tweet.media) {
+          html += '<img class="tweet-img" loading="lazy" src="paper-threads/media/' + media + '" alt="" onclick="openLightbox(this.src); event.stopPropagation();" />';
+        }
+
+        html += '</div>';
+      }
+      return html;
+    }
+
+    function formatTweetText(text) {
+      // Escape HTML
+      let html = escapeHtml(text);
+      // Convert URLs to links
+      html = html.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+      return html;
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function openLightbox(src) {
+      document.getElementById('lightbox-img').src = src;
+      document.getElementById('lightbox').className = 'lightbox open';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').className = 'lightbox';
+      document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeLightbox();
+    });
+
+    init();
+  </script>
+</body>
+</html>
