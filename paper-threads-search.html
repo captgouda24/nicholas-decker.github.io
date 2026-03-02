@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="semantic search across 241 economics paper threads" />
+  <title>search paper threads - nicholas decker</title>
+  <style>
+    body {
+      line-height: 1.6;
+      font-size: 18px;
+      padding: 0 10px;
+      margin: 40px auto;
+      max-width: 700px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    a:link, a:visited { color: blue; }
+    h1 { text-align: center; margin-bottom: 0.2em; }
+    .subtitle { text-align: center; font-size: medium; margin-top: 0; margin-bottom: 30px; }
+    .search-box { margin-bottom: 25px; }
+    .search-input {
+      width: 100%;
+      padding: 12px 15px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    .search-input:focus { outline: none; border-color: #666; }
+    .search-hint { font-size: 13px; color: #888; margin-top: 8px; }
+    .loading { text-align: center; color: #666; padding: 40px 0; }
+    .results { margin-top: 20px; }
+    .result { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
+    .result:last-child { border-bottom: none; }
+    .result-title { font-weight: bold; cursor: pointer; }
+    .result-title:hover { text-decoration: underline; }
+    .result-meta { font-size: 14px; color: #666; margin-top: 3px; }
+    .result-score { font-size: 12px; color: #999; }
+    .no-results { text-align: center; color: #666; padding: 30px 0; }
+    .stats { text-align: center; font-size: 14px; color: #666; margin-bottom: 15px; }
+    .nav { text-align: center; margin-bottom: 20px; }
+    .nav a { margin: 0 10px; }
+    @media (max-width: 500px) {
+      body { margin: 20px auto; font-size: 16px; }
+      .search-input { padding: 10px 12px; }
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html"><h1>search paper threads</h1></a>
+  <p class="subtitle">semantic search across 241 economics papers</p>
+
+  <div class="nav">
+    <a href="paper-threads.html">browse all papers</a>
+  </div>
+
+  <div class="search-box">
+    <input type="text" id="search-input" class="search-input"
+           placeholder="Search by meaning... (e.g., 'how trade affects wages')"
+           autocomplete="off" />
+    <div class="search-hint">
+      Semantic search finds papers by meaning, not just keywords.
+      Try questions like "what causes inequality?" or "firm productivity measurement"
+    </div>
+  </div>
+
+  <div id="loading" class="loading" style="display: none;">
+    Loading search index...
+  </div>
+
+  <div id="init-loading" class="loading">
+    Loading embedding model and search index...<br>
+    <small>(~5MB download on first visit)</small>
+  </div>
+
+  <div id="stats" class="stats" style="display: none;"></div>
+  <div id="results" class="results"></div>
+  <div id="no-results" class="no-results" style="display: none;">
+    No results found. Try different terms.
+  </div>
+
+  <script type="module">
+    // Import transformers.js for client-side embedding
+    import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.1';
+
+    // Disable local model check (we'll always use remote)
+    env.allowLocalModels = false;
+
+    let searchIndex = null;
+    let embedder = null;
+    let isReady = false;
+
+    // Cosine similarity between two vectors
+    function cosineSimilarity(a, b) {
+      let dot = 0, normA = 0, normB = 0;
+      for (let i = 0; i < a.length; i++) {
+        dot += a[i] * b[i];
+        normA += a[i] * a[i];
+        normB += b[i] * b[i];
+      }
+      return dot / (Math.sqrt(normA) * Math.sqrt(normB));
+    }
+
+    // Search papers by query
+    async function search(query) {
+      if (!isReady || !query.trim()) return [];
+
+      // Embed the query
+      const output = await embedder(query, { pooling: 'mean', normalize: true });
+      const queryEmbedding = Array.from(output.data);
+
+      // Calculate similarity to all papers
+      const scores = searchIndex.embeddings.map((emb, i) => ({
+        index: i,
+        score: cosineSimilarity(queryEmbedding, emb)
+      }));
+
+      // Sort by score descending
+      scores.sort((a, b) => b.score - a.score);
+
+      // Return top 20 results with score > 0.2
+      return scores
+        .filter(s => s.score > 0.2)
+        .slice(0, 20)
+        .map(s => ({
+          ...searchIndex.papers[s.index],
+          score: s.score
+        }));
+    }
+
+    // Render search results
+    function renderResults(results) {
+      const container = document.getElementById('results');
+      const noResults = document.getElementById('no-results');
+
+      if (results.length === 0) {
+        container.innerHTML = '';
+        noResults.style.display = 'block';
+        return;
+      }
+
+      noResults.style.display = 'none';
+      container.innerHTML = results.map(r => `
+        <div class="result">
+          <div class="result-title" onclick="window.location.href='paper-threads.html#paper-${r.id}'">
+            ${escapeHtml(r.authors)}${r.year ? ` (${r.year})` : ''}${r.title ? `, "${escapeHtml(r.title)}"` : ''}
+          </div>
+          <div class="result-meta">${r.threadLength} tweets</div>
+          <div class="result-score">relevance: ${(r.score * 100).toFixed(1)}%</div>
+        </div>
+      `).join('');
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text || '';
+      return div.innerHTML;
+    }
+
+    // Debounce search
+    let searchTimeout = null;
+    function handleSearch(e) {
+      const query = e.target.value;
+
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(async () => {
+        if (query.length < 3) {
+          document.getElementById('results').innerHTML = '';
+          document.getElementById('no-results').style.display = 'none';
+          return;
+        }
+
+        document.getElementById('loading').style.display = 'block';
+
+        try {
+          const results = await search(query);
+          renderResults(results);
+        } catch (err) {
+          console.error('Search error:', err);
+        }
+
+        document.getElementById('loading').style.display = 'none';
+      }, 300);
+    }
+
+    // Initialize
+    async function init() {
+      try {
+        // Load search index
+        const indexResp = await fetch('paper-threads/search-index.json');
+        if (!indexResp.ok) throw new Error('Search index not found');
+        searchIndex = await indexResp.json();
+
+        // Load embedding model (all-MiniLM-L6-v2 via transformers.js)
+        embedder = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
+
+        isReady = true;
+        document.getElementById('init-loading').style.display = 'none';
+        document.getElementById('stats').style.display = 'block';
+        document.getElementById('stats').textContent =
+          `${searchIndex.papers.length} papers indexed`;
+
+        // Focus search input
+        document.getElementById('search-input').focus();
+
+      } catch (err) {
+        console.error('Init error:', err);
+        document.getElementById('init-loading').innerHTML =
+          'Error loading search. <a href="paper-threads.html">Browse papers instead</a>';
+      }
+    }
+
+    // Setup event listeners
+    document.getElementById('search-input').addEventListener('input', handleSearch);
+    document.getElementById('search-input').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        clearTimeout(searchTimeout);
+        handleSearch(e);
+      }
+    });
+
+    // Start initialization
+    init();
+  </script>
+</body>
+</html>

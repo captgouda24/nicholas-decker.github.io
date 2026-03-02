@@ -56,6 +56,7 @@
   <div class="nav">
     <a id="nav-author" class="active" onclick="showView('author')">by author</a>
     <a id="nav-year" onclick="showView('year')">by year</a>
+    <a href="paper-threads-search.html">search</a>
   </div>
 
   <div id="letters" class="letters"></div>
@@ -83,6 +84,19 @@
 
       buildFilters();
       render();
+
+      // Handle hash links (e.g., #paper-5 from search)
+      if (window.location.hash) {
+        const match = window.location.hash.match(/^#paper-(\d+)$/);
+        if (match) {
+          const paperId = parseInt(match[1]);
+          setTimeout(() => {
+            togglePaper(paperId);
+            const el = document.getElementById('paper-' + paperId);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 100);
+        }
+      }
     }
 
     function buildFilters() {
@@ -160,7 +174,7 @@
         const p = data.papers[id];
         const isOpen = openPaperId === id;
 
-        html += '<div class="paper">';
+        html += '<div class="paper" id="paper-' + id + '">';
         html += '<div class="paper-title" onclick="togglePaper(' + id + ')">';
         html += escapeHtml(p.authors);
         if (p.year) html += ' (' + p.year + ')';
