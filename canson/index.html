@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>The Canson Surplus Case</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column styled like a case file — docket header, ledger table, dated entries with record cites in the margin */
+:root {
+  --bg: #f4f6f7;
+  --surface: #ffffff;
+  --ink: #17222c;
+  --muted: #56636e;
+  --rule: #d6dde2;
+  --accent: #1d5f53;
+  --accent-soft: #e2efec;
+  --court: #24476b;
+  --court-soft: #e3ebf4;
+  --flag: #8a5a00;
+  --flag-soft: #f6ecd6;
+  --display: "Newsreader", Georgia, "Times New Roman", serif;
+  --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #11181e; --surface: #18222a; --ink: #e3e9ed; --muted: #9aa8b2; --rule: #2c3a44;
+    --accent: #6cc3b0; --accent-soft: #19332f; --court: #8fb4dd; --court-soft: #1c2a3a;
+    --flag: #e2b45c; --flag-soft: #33291a; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #11181e; --surface: #18222a; --ink: #e3e9ed; --muted: #9aa8b2; --rule: #2c3a44;
+  --accent: #6cc3b0; --accent-soft: #19332f; --court: #8fb4dd; --court-soft: #1c2a3a;
+  --flag: #e2b45c; --flag-soft: #33291a; color-scheme: dark;
+}
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.6; }
+.wrap { max-width: 800px; margin: 0 auto; padding-block: 40px 72px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: var(--display); font-weight: 600; line-height: 1.2; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2rem, 5vw, 2.8rem); }
+h2 { font-size: 1.6rem; margin-bottom: 14px; }
+h3 { font-size: 1.15rem; }
+p { margin: 0; max-width: 68ch; }
+a { color: var(--accent); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.mono, .cite, td.num { font-family: var(--mono); }
+.eyebrow { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+header { display: grid; gap: 14px; padding-bottom: 24px; border-bottom: 2px solid var(--ink); }
+.docket { display: flex; flex-wrap: wrap; gap: 6px 18px; font-family: var(--mono); font-size: 0.8rem; color: var(--muted); }
+.lede { font-size: 1.1rem; }
+
+nav { display: flex; flex-wrap: wrap; gap: 6px 16px; padding-block: 14px; border-bottom: 1px solid var(--rule); font-size: 0.9rem; }
+nav a { text-decoration: none; color: var(--muted); }
+nav a:hover { color: var(--accent); }
+
+section { padding-top: 44px; display: grid; gap: 16px; }
+
+.notice { background: var(--flag-soft); border-left: 3px solid var(--flag); padding: 14px 16px; font-size: 0.92rem; display: grid; gap: 8px; }
+.notice strong { color: var(--flag); }
+
+.key { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 0.85rem; color: var(--muted); align-items: center; }
+.tag { display: inline-block; font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; padding: 2px 7px; border-radius: 3px; white-space: nowrap; vertical-align: 2px; }
+.t-court { background: var(--court-soft); color: var(--court); }
+.t-doc { background: var(--accent-soft); color: var(--accent); }
+.t-disp { background: var(--flag-soft); color: var(--flag); }
+
+.points { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.points li { padding-left: 18px; position: relative; max-width: 70ch; }
+.points li::before { content: ""; position: absolute; left: 0; top: 0.7em; width: 7px; height: 7px; background: var(--accent); }
+
+.table-scroll { overflow-x: auto; background: var(--surface); border: 1px solid var(--rule); }
+table { border-collapse: collapse; width: 100%; font-size: 0.93rem; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-family: var(--mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 500; }
+td.num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+tr.total td { font-weight: 600; border-top: 2px solid var(--ink); }
+tr.zero td { color: var(--flag); font-weight: 600; }
+tr:last-child td { border-bottom: none; }
+
+.timeline { list-style: none; margin: 0; padding: 0; display: grid; }
+.timeline li { display: grid; grid-template-columns: 110px 1fr; gap: 4px 18px; padding: 14px 0; border-bottom: 1px solid var(--rule); }
+.timeline .date { font-family: var(--mono); font-size: 0.85rem; color: var(--muted); padding-top: 2px; font-variant-numeric: tabular-nums; }
+.timeline .body { display: grid; gap: 4px; min-width: 0; }
+.timeline .cite { font-size: 0.75rem; color: var(--muted); }
+.timeline li.key-event .date { color: var(--accent); font-weight: 500; }
+@media (max-width: 560px) { .timeline li { grid-template-columns: 1fr; } }
+
+.accounts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 620px) { .accounts { grid-template-columns: 1fr; } }
+.account { background: var(--surface); border: 1px solid var(--rule); padding: 16px; display: grid; gap: 8px; align-content: start; }
+.account .n { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); }
+.account blockquote { margin: 0; font-family: var(--display); font-size: 1.08rem; line-height: 1.4; }
+.account .cite { font-size: 0.75rem; color: var(--muted); }
+
+.cast { display: grid; gap: 0; }
+.person { display: grid; grid-template-columns: 210px 1fr; gap: 4px 18px; padding: 14px 0; border-bottom: 1px solid var(--rule); }
+.person .name { font-weight: 600; }
+.person .role { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); display: block; font-weight: 400; }
+.person p { min-width: 0; }
+@media (max-width: 560px) { .person { grid-template-columns: 1fr; } }
+.cast-group { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); padding-top: 18px; padding-bottom: 4px; border-bottom: 1px solid var(--ink); }
+
+.two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 620px) { .two { grid-template-columns: 1fr; } }
+.panel { background: var(--surface); border: 1px solid var(--rule); padding: 16px; display: grid; gap: 10px; align-content: start; }
+.panel ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 0.93rem; }
+
+.doclist { margin: 0; padding-left: 18px; columns: 2; column-gap: 24px; font-size: 0.92rem; }
+.doclist li { break-inside: avoid; padding-block: 2px; }
+@media (max-width: 620px) { .doclist { columns: 1; } }
+.small { font-size: 0.85rem; color: var(--muted); }
+footer { margin-top: 48px; padding-top: 16px; border-top: 2px solid var(--ink); display: grid; gap: 8px; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Case summary · from court filings · as of November 11, 2026</div>
+  <h1>The Canson Surplus Case</h1>
+  <p class="lede">In 2017, a $474,184.38 foreclosure surplus owed to Patricia Byrd Canson, then 74, went into her lawyer Donald Iwuchukwu's trust account. She died in 2023 without having been paid any of it. Her lawyer has since given four different accounts of where the money went, and a trust naming him trustee is under challenge as forged.</p>
+  <div class="docket">
+    <span>Contra Costa Super. Ct. P24-02188</span>
+    <span>Related: P23-01804 · P23-01818 · C24-02896</span>
+    <span>LASC 26STCV08065</span>
+  </div>
+</header>
+
+<nav aria-label="Sections">
+  <a href="#short">In short</a>
+  <a href="#money">The money</a>
+  <a href="#accounts">Four accounts</a>
+  <a href="#trust">The 2017 Trust</a>
+  <a href="#timeline">Timeline</a>
+  <a href="#cast">People</a>
+  <a href="#pattern">Other clients</a>
+  <a href="#status">Where it stands</a>
+  <a href="#sources">Sources</a>
+</nav>
+
+<section>
+  <div class="notice">
+    <p><strong>Read this first.</strong> Everything here comes from court filings, most of them filed by the side suing Mr. Iwuchukwu (Steven Smith, trustee of Ms. Canson's 2023 trust). Mr. Iwuchukwu denies wrongdoing. No court has entered a final judgment that he took the money or forged any document. Each item below is labeled by how well it is established.</p>
+    <div class="key">
+      <span><span class="tag t-court">Court action</span> a judge ordered or found it</span>
+      <span><span class="tag t-doc">Documented</span> shown by bank records, signed papers or sworn testimony</span>
+      <span><span class="tag t-disp">Alleged</span> claimed by a party; not yet decided</span>
+    </div>
+  </div>
+</section>
+
+<section id="short">
+  <h2>In short</h2>
+  <ul class="points">
+    <li><span class="tag t-doc">Documented</span> The surplus check, payable to Ms. Canson, was endorsed "Patricia Byrd Canson (POA)" and deposited into the Law Offices of Donald Iwuchukwu account at Citibank on March 7, 2017.</li>
+    <li><span class="tag t-doc">Documented</span> Two days later his office sent her a cashier's check for $204,347.50, "minus the hold-back (per instruction) and fees of 10%." That left $269,836.88 withheld. About $222,000 of it has never been accounted for.</li>
+    <li><span class="tag t-doc">Documented</span> In April 2018 Mr. Iwuchukwu had the cashier's check cancelled and reissued. The replacement was cashed on July 16, 2018. Ms. Canson still had the original check when she died, and listed it as an asset of her 2023 trust.</li>
+    <li><span class="tag t-doc">Documented</span> Mr. Iwuchukwu has given four inconsistent explanations of what happened to the $204,347.50. The man he says received it swears he never did.</li>
+    <li><span class="tag t-court">Court action</span> On April 14, 2026, the probate court suspended Mr. Iwuchukwu as trustee of the disputed 2017 Trust and issued its own order to show cause regarding sanctions.</li>
+    <li><span class="tag t-disp">Alleged</span> Mr. Smith says the 2017 Trust and the replacement-check endorsement are forgeries. A sanctions motion seeking $3.46 million is set for hearing on November 12, 2026.</li>
+  </ul>
+</section>
+
+<section id="money">
+  <h2>The money</h2>
+  <p>Ms. Canson's late husband, Dr. Clarence Canson, owned a house at 10 Powder Bowl Court. It was sold at a trustee's sale on November 29, 2016, leaving a surplus after the lender was paid. That surplus belonged to Ms. Canson as his successor.</p>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>Item</th><th>Date</th><th style="text-align:right">Amount</th></tr></thead>
+      <tbody>
+        <tr><td>Surplus check #9222, payable to Patricia Canson, deposited to Iwuchukwu's Citibank account</td><td class="mono">2017-03-07</td><td class="num">$474,184.38</td></tr>
+        <tr><td>Cashier's check sent to Ms. Canson</td><td class="mono">2017-03-09</td><td class="num">−$204,347.50</td></tr>
+        <tr class="total"><td>Withheld at the source</td><td></td><td class="num">$269,836.88</td></tr>
+        <tr><td>…of which a 10% fee, per his cover letter, would be</td><td></td><td class="num">$47,418.44</td></tr>
+        <tr><td>…leaving a "hold-back (per instruction)" never explained</td><td></td><td class="num">$222,418.44</td></tr>
+        <tr><td>Replacement cashier's check paid; receiving account not yet identified in the record</td><td class="mono">2018-07-16</td><td class="num">$204,347.50</td></tr>
+        <tr class="zero"><td>Received by Ms. Canson, as far as the record shows</td><td></td><td class="num">$0.00</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="small">Sources: <a href="docs/Lewin_Decl_body.pdf" target="_blank" rel="noopener">Lewin Decl. ¶¶12, 22</a> and <a href="docs/Lewin_Ex_O_Surplus_Check.pdf" target="_blank" rel="noopener">Ex. O (check image)</a>; Smith Decl. <a href="docs/Smith_Ex_D_Cashiers_Check_Letter.pdf" target="_blank" rel="noopener">Ex. D</a>, <a href="docs/Smith_Ex_O_Iwuchukwu_Decl_and_Receipt.pdf" target="_blank" rel="noopener">Ex. O</a>, <a href="docs/Smith_Ex_P.pdf" target="_blank" rel="noopener">Ex. P</a>, <a href="docs/Smith_Ex_Q_Replacement_Check.pdf" target="_blank" rel="noopener">Ex. Q</a>; <a href="docs/Armstrong_Decl_body.pdf" target="_blank" rel="noopener">Armstrong Decl. ¶6</a>. A lawyer holding client funds must account for them on request (Cal. Rules of Prof. Conduct 1.15). Mr. Iwuchukwu has declined, citing privilege, including to a named beneficiary of the trust he manages.</p>
+</section>
+
+<section id="accounts">
+  <h2>Four accounts of the $204,347.50</h2>
+  <p>These cannot all be true. The first and second contradict each other directly, and his own exhibit (the third) points the money toward a person who denies receiving it.</p>
+  <div class="accounts">
+    <div class="account">
+      <span class="n">1 · Letter, October 14, 2024</span>
+      <blockquote>Ms. Canson assigned her interest to Aurin Canson, and the funds were "assigned and distributed" to him while she was alive.</blockquote>
+      <span class="cite"><a href="docs/Compendium_Ex_24_Oct_2024_Letter.pdf" target="_blank" rel="noopener">Compendium Ex. 24</a></span>
+    </div>
+    <div class="account">
+      <span class="n">2 · Sworn declaration, May 4, 2026</span>
+      <blockquote>She said she lost the check; he had it replaced "payable again to Patricia Canson" and "did not convert any funds."</blockquote>
+      <span class="cite"><a href="docs/Smith_Ex_O_Iwuchukwu_Decl_and_Receipt.pdf" target="_blank" rel="noopener">Smith Decl. Ex. O</a></span>
+    </div>
+    <div class="account">
+      <span class="n">3 · Handwritten note on his own reissue receipt, 2018</span>
+      <blockquote>"Re issued prev. CK (can't find) — Pat lost. Endorse &amp; sign Agrmt / Invest per Agrmt — then to Aurin (Hold)."</blockquote>
+      <span class="cite"><a href="docs/Smith_Ex_O_Iwuchukwu_Decl_and_Receipt.pdf" target="_blank" rel="noopener">Smith Decl. Ex. O/P (filed by Iwuchukwu)</a></span>
+    </div>
+    <div class="account">
+      <span class="n">4 · As told to Aurin Canson, per his deposition</span>
+      <blockquote>Mr. Iwuchukwu is holding the check for Aurin until the litigation ends.</blockquote>
+      <span class="cite"><a href="docs/Armstrong_Ex_17_Aurin_Depo.pdf" target="_blank" rel="noopener">Aurin Canson Depo. 154–156 (Armstrong Decl. Ex. 17)</a></span>
+    </div>
+  </div>
+  <p>Aurin Canson, under oath, March 5, 2026: "He didn't give me any fucking money." <span class="small">(<a href="docs/Compendium_Ex_13_Aurin_Depo.pdf" target="_blank" rel="noopener">Compendium Ex. 13</a>)</span></p>
+</section>
+
+<section id="trust">
+  <h2>The 2017 Trust</h2>
+  <p>Mr. Iwuchukwu relies on a trust document dated February 28, 2017. It names him initial trustee, with no bond, and leaves Ms. Canson's estate 80% to Aurin Canson, 10% to her friend Sheila Webb and 10% to a "Sue Bochac." In August 2023, days before her death, Ms. Canson signed a different trust before a notary and witnesses after a doctor found she had capacity. It leaves her estate to 19 relatives and friends.</p>
+  <div class="two">
+    <div class="panel">
+      <h3>Problems with the 2017 Trust</h3>
+      <ul>
+        <li><span class="tag t-doc">Documented</span> The notary whose stamp appears on it testified she did not notarize it. Her journal has no entry for it.</li>
+        <li><span class="tag t-doc">Documented</span> Mr. Iwuchukwu signed his acceptance as trustee on January 20, 2023, in Los Angeles. That is nearly six years after the trust's date and seven months before Ms. Canson died.</li>
+        <li><span class="tag t-doc">Documented</span> Nobody in Ms. Canson's life has heard of "Sue Bochac." The only Bohac in the record is a 2021 foreclosure-surplus payee whose check also went into Mr. Iwuchukwu's account under a "(POA)" endorsement. If the name came from that 2021 file, the document could not have been drafted in 2017.</li>
+        <li><span class="tag t-doc">Documented</span> Sheila Webb, who would inherit 10% under it, testifies against it.</li>
+        <li><span class="tag t-disp">Alleged</span> A 2005 "Clarence Canson trust" his office gave the foreclosure trustee in 2016 bears what a handwriting examiner calls a "crude simulation" of Dr. Canson's signature, with his middle name misspelled.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>Points that cut the other way</h3>
+      <ul>
+        <li>The notary's journal does show Ms. Canson signing an Indemnity Agreement before her on February 23, 2017, five days before the trust's date. She did visit this notary that week.</li>
+        <li>The notary left her stamp and journal at her workplace overnight and said the signature "looks very similar" to hers. That shows the acknowledgment is false. It does not by itself show who made it.</li>
+        <li>No handwriting expert has yet examined Ms. Canson's signature on the 2017 Trust or on the 2018 check endorsement.</li>
+        <li>The bank account that received the July 2018 replacement check has not yet been identified in the record.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="timeline">
+  <h2>Timeline</h2>
+  <ol class="timeline">
+    <li><span class="date">2016-11-29</span><div class="body"><p>Trustee's sale of 10 Powder Bowl Court produces a $474,184.38 surplus.</p><span class="cite"><a href="docs/Lewin_Decl_body.pdf" target="_blank" rel="noopener">Lewin Decl. ¶¶12, 22</a></span></div></li>
+    <li><span class="date">2016-12-15</span><div class="body"><p>Iwuchukwu's office tells the foreclosure trustee it represents Ms. Canson and submits a purported 2005 "Irrevocable Living Trust of Clarence Canson" and an Indemnity Agreement.</p><span class="cite"><a href="docs/Lewin_Decl_body.pdf" target="_blank" rel="noopener">Lewin Decl. ¶¶13–15, 20</a></span></div></li>
+    <li><span class="date">2017-02-23</span><div class="body"><p>Ms. Canson signs the Indemnity Agreement before notary Mary Beth Barbieri (journal entry).</p><span class="cite"><a href="docs/Armstrong_Decl_body.pdf" target="_blank" rel="noopener">Armstrong Decl. ¶81 n.2</a></span></div></li>
+    <li><span class="date">2017-02-28</span><div class="body"><p>Date on the disputed 2017 Trust naming Iwuchukwu trustee.</p><span class="cite"><a href="docs/Smith_Ex_Y_2017_Trust.pdf" target="_blank" rel="noopener">Smith Decl. Ex. Y</a></span></div></li>
+    <li class="key-event"><span class="date">2017-03-07</span><div class="body"><p><span class="tag t-doc">Documented</span> Surplus check deposited to Iwuchukwu's Citibank account, endorsed "Patricia Byrd Canson (POA)."</p><span class="cite"><a href="docs/Lewin_Ex_O_Surplus_Check.pdf" target="_blank" rel="noopener">Lewin Decl. Ex. O</a></span></div></li>
+    <li class="key-event"><span class="date">2017-03-09</span><div class="body"><p><span class="tag t-doc">Documented</span> $204,347.50 cashier's check sent to Ms. Canson; $269,836.88 withheld.</p><span class="cite"><a href="docs/Smith_Ex_D_Cashiers_Check_Letter.pdf" target="_blank" rel="noopener">Smith Decl. Ex. D</a></span></div></li>
+    <li class="key-event"><span class="date">2018-04-10</span><div class="body"><p><span class="tag t-doc">Documented</span> Iwuchukwu has Citibank cancel and reissue the cashier's check. The receipt bears the "then to Aurin (Hold)" note.</p><span class="cite">Smith Decl. <a href="docs/Smith_Ex_O_Iwuchukwu_Decl_and_Receipt.pdf" target="_blank" rel="noopener">Ex. O</a>, <a href="docs/Smith_Ex_P.pdf" target="_blank" rel="noopener">Ex. P</a></span></div></li>
+    <li class="key-event"><span class="date">2018-07-16</span><div class="body"><p><span class="tag t-disp">Alleged forgery</span> Replacement check paid, endorsed "Patricia B. Canson." Mr. Smith says she did not sign it.</p><span class="cite"><a href="docs/Smith_Ex_Q_Replacement_Check.pdf" target="_blank" rel="noopener">Smith Decl. Ex. Q</a>; <a href="docs/Armstrong_Ex_56_Replacement_Check.pdf" target="_blank" rel="noopener">Armstrong Decl. Ex. 56</a></span></div></li>
+    <li class="key-event"><span class="date">2023-01-20</span><div class="body"><p><span class="tag t-doc">Documented</span> Iwuchukwu signs a notarized acceptance as trustee of the "2017" Trust.</p><span class="cite"><a href="docs/Smith_Ex_Y_2017_Trust.pdf" target="_blank" rel="noopener">Smith Decl. Ex. Y</a></span></div></li>
+    <li><span class="date">2023-07-08</span><div class="body"><p>Ms. Canson tells her brother, Steven Smith, that she has terminal cancer and an uncashed check, and where she keeps it.</p><span class="cite"><a href="docs/Smith_Decl_body.pdf" target="_blank" rel="noopener">Smith Decl. ¶¶40–54</a></span></div></li>
+    <li><span class="date">2023-08-13</span><div class="body"><p>Two days after a physician finds she has capacity, Ms. Canson signs her 2023 Trust and will before a notary and witnesses. The trust lists the cashier's check as an asset.</p><span class="cite">Smith Decl. <a href="docs/Smith_Ex_A_2023_Trust.pdf" target="_blank" rel="noopener">Ex. A</a>, Ex. E (medical record, not posted), <a href="docs/Smith_Ex_F_Pour_Over_Will.pdf" target="_blank" rel="noopener">Ex. F</a>; <a href="docs/Webb_Decl_body.pdf" target="_blank" rel="noopener">Webb Decl. ¶19</a></span></div></li>
+    <li><span class="date">2023-08-17</span><div class="body"><p>Ms. Canson dies. Citibank tells Mr. Smith the check was cancelled by the remitter.</p><span class="cite"><a href="docs/Smith_Decl_body.pdf" target="_blank" rel="noopener">Smith Decl. ¶¶77–79</a></span></div></li>
+    <li><span class="date">2023-10</span><div class="body"><p>Aurin Canson changes the locks on Ms. Canson's Pinole house and occupies it. Iwuchukwu files a petition to put her assets into the 2017 Trust.</p><span class="cite"><a href="docs/Compendium_Ex_13_Aurin_Depo.pdf" target="_blank" rel="noopener">Compendium Ex. 13</a>; P24-02188</span></div></li>
+    <li><span class="date">2024-10-14</span><div class="body"><p>Iwuchukwu letter: funds "assigned and distributed" to Aurin.</p><span class="cite"><a href="docs/Compendium_Ex_24_Oct_2024_Letter.pdf" target="_blank" rel="noopener">Compendium Ex. 24</a></span></div></li>
+    <li><span class="date">2025-10-29</span><div class="body"><p><span class="tag t-court">Court action</span> In Mr. Smith's civil suit, the court denies the lawyers' anti-SLAPP motion, finding his claims have at least minimal merit.</p><span class="cite"><a href="docs/Compendium_Ex_44_AntiSLAPP_Denial.pdf" target="_blank" rel="noopener">Compendium Ex. 44 (C24-02896)</a></span></div></li>
+    <li><span class="date">2025-11-24</span><div class="body"><p><span class="tag t-court">Court action</span> Stipulated judgment returns the Pinole house to Mr. Smith. Aurin leaves in January 2026.</p><span class="cite">N23-2314</span></div></li>
+    <li><span class="date">2026-03</span><div class="body"><p>Depositions: Aurin says he received no money; the notary finds no journal entry for the trust.</p><span class="cite">Compendium <a href="docs/Compendium_Ex_13_Aurin_Depo.pdf" target="_blank" rel="noopener">Ex. 13</a>, <a href="docs/Compendium_Ex_29_Barbieri_Depo.pdf" target="_blank" rel="noopener">Ex. 29</a></span></div></li>
+    <li class="key-event"><span class="date">2026-04-14</span><div class="body"><p><span class="tag t-court">Court action</span> Iwuchukwu suspended as trustee; court issues an order to show cause regarding sanctions.</p><span class="cite"><a href="docs/Armstrong_Ex_34_OSC_Order.pdf" target="_blank" rel="noopener">Armstrong Decl. Ex. 34</a></span></div></li>
+    <li><span class="date">2026-05-04</span><div class="body"><p>Iwuchukwu's sworn declaration: check reissued "payable again to Patricia Canson."</p><span class="cite"><a href="docs/Smith_Ex_O_Iwuchukwu_Decl_and_Receipt.pdf" target="_blank" rel="noopener">Smith Decl. Ex. O</a></span></div></li>
+    <li><span class="date">2026-05 to 08</span><div class="body"><p>Evidentiary hearings (May 6, July 1, Aug. 19–20). The notary testifies live that she did not notarize the trust.</p><span class="cite">Armstrong Decl. <a href="docs/Armstrong_Ex_35_Hearing_2026-05-06.pdf" target="_blank" rel="noopener">Ex. 35</a>, <a href="docs/Armstrong_Ex_36_Hearing_2026-07-01.pdf" target="_blank" rel="noopener">36</a>, <a href="docs/Armstrong_Ex_37_Hearing_2026-08-19.pdf" target="_blank" rel="noopener">37</a>, <a href="docs/Armstrong_Ex_38_Hearing_2026-08-20.pdf" target="_blank" rel="noopener">38</a></span></div></li>
+    <li><span class="date">2026</span><div class="body"><p><span class="tag t-court">Court action</span> Iwuchukwu's defamation suit against Mr. Smith's lawyer, Shona Armstrong, is dismissed on her anti-SLAPP motion.</p><span class="cite"><a href="docs/Armstrong_Ex_54_AntiSLAPP_Ruling.pdf" target="_blank" rel="noopener">Armstrong Decl. Ex. 54 (26STCV08065)</a></span></div></li>
+    <li class="key-event"><span class="date">2026-11-12</span><div class="body"><p>Hearing on Mr. Smith's sanctions motion, Dept. 38, Contra Costa Superior Court.</p><span class="cite"><a href="docs/Motion_for_Sanctions.pdf" target="_blank" rel="noopener">Notice of Motion, filed Sept. 23, 2026</a></span></div></li>
+  </ol>
+</section>
+
+<section id="cast">
+  <h2>People</h2>
+  <div class="cast">
+    <div class="cast-group">Ms. Canson's side</div>
+    <div class="person"><div class="name">Patricia Byrd Canson<span class="role">1942–2023</span></div><p>Retired, widowed, no children. Owed the $474,184.38 surplus from her late husband's house. Kept the original cashier's check until her death.</p></div>
+    <div class="person"><div class="name">Steven A. Smith<span class="role">Brother; trustee, 2023 Trust</span></div><p>Moving party in the sanctions motion and plaintiff in the civil suit against the lawyers and Citibank.</p></div>
+    <div class="person"><div class="name">Sheila Webb<span class="role">Friend of 37 years</span></div><p>Present when the 2023 Trust was signed. Named a 10% beneficiary in the 2017 Trust, yet testifies that it is not genuine. Has asked Iwuchukwu for an accounting and been refused.</p></div>
+    <div class="person"><div class="name">Shona Armstrong<span class="role">Counsel for Mr. Smith</span></div><p>Lead counsel since 2025. Was sued for defamation by Iwuchukwu over letters to other former clients; won dismissal.</p></div>
+
+    <div class="cast-group">Iwuchukwu's side</div>
+    <div class="person"><div class="name">Donald Iwuchukwu<span class="role">Attorney, Burbank</span></div><p>Ms. Canson's lawyer in the 2016–17 surplus recovery. Received and deposited the surplus check, withheld $269,836.88, reissued the cashier's check in 2018, and is the self-named trustee of the 2017 Trust. Suspended as trustee April 2026.</p></div>
+    <div class="person"><div class="name">Aurin Canson<span class="role">80% beneficiary, 2017 Trust</span></div><p>Adopted son of Dr. Canson's cousin. Occupied Ms. Canson's house from October 2023 to January 2026. Testified he never received the check money. Named as a respondent in the sanctions motion.</p></div>
+    <div class="person"><div class="name">Martha Rodriguez<span class="role">Paralegal for Iwuchukwu</span></div><p>Client-facing staff in this and other matters. Sentenced in 2010 to 120 months in federal prison in a mortgage-fraud scheme (C.D. Cal. CR 05-1157). Introduced phone records and emails at the August 2026 hearing that Mr. Smith disputes.</p></div>
+    <div class="person"><div class="name">Christian Anyiam<span class="role">Counsel for Iwuchukwu</span></div><p>Iwuchukwu's counsel in the probate cases. Named as a respondent in the sanctions motion.</p></div>
+    <div class="person"><div class="name">Metu Ogike<span class="role">Counsel for Aurin Canson</span></div><p>Appears for Aurin, often specially. Bank records show small fee payments between his trust account and Iwuchukwu's. Named in the sanctions motion. The record ties him to the Canson money less directly than the others.</p></div>
+
+    <div class="cast-group">Witnesses</div>
+    <div class="person"><div class="name">Mary Beth Barbieri (Mosley)<span class="role">Notary</span></div><p>Her stamp appears on the 2017 Trust. Testified she did not notarize it. Her journal shows Ms. Canson's Indemnity Agreement on Feb. 23, 2017, but no trust.</p></div>
+    <div class="person"><div class="name">James Lewin<span class="role">Foreclosure trustee's counsel</span></div><p>Ran the 2016 sale and issued the surplus check. Received the purported 2005 Clarence Canson trust from Iwuchukwu's office.</p></div>
+    <div class="person"><div class="name">M. Patricia Fisher<span class="role">Handwriting examiner</span></div><p>Examined Dr. Canson's signature on the 2005 trust. Has not examined Ms. Canson's signatures.</p></div>
+  </div>
+</section>
+
+<section id="pattern">
+  <h2>Other clients</h2>
+  <p>Citibank records produced in the case cover Mr. Iwuchukwu's law-office account from December 2018 to March 2022.</p>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>Third-party checks deposited under a "(POA)" endorsement</th><th style="text-align:right">Count</th><th style="text-align:right">Total</th></tr></thead>
+      <tbody>
+        <tr><td>Foreclosure surplus and county excess proceeds</td><td class="num">26</td><td class="num">$3,947,401.22</td></tr>
+        <tr><td>Insurance, retirement payouts, escrow refunds, other</td><td class="num">14</td><td class="num">$1,364,219.30</td></tr>
+        <tr class="total"><td>All</td><td class="num">40</td><td class="num">$5,311,620.52</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <ul class="points">
+    <li><span class="tag t-doc">Documented</span> Large deposits were often followed within days by checks of roughly 15–20% of the deposit to Mr. Iwuchukwu or his firm. In one case a $492,085 surplus was followed two days later by $98,400 to his law group.</li>
+    <li><span class="tag t-doc">Documented</span> The records show many cash withdrawals of $500 to $15,000. Only one direct payout to a client appears, for 67% of that client's deposit.</li>
+    <li><span class="tag t-disp">Alleged</span> Other former clients have filed State Bar complaints or lawsuits alleging withheld settlement money, work not done, and false advertising. These have not been decided.</li>
+  </ul>
+  <p class="small">These records show a high-volume surplus-recovery practice with large, fast fee draws. They do not by themselves show whether other clients were paid what they were owed; that would take per-client ledgers or interviews. Client names and account numbers are omitted here.</p>
+</section>
+
+<section id="status">
+  <h2>Where it stands</h2>
+  <div class="two">
+    <div class="panel">
+      <h3>Decided so far</h3>
+      <ul>
+        <li>Lawyers' anti-SLAPP motion in the civil suit denied (Oct. 2025).</li>
+        <li>Pinole house returned by stipulated judgment (Nov. 2025).</li>
+        <li>Iwuchukwu suspended as trustee; order to show cause issued (Apr. 2026).</li>
+        <li>Iwuchukwu's petition to invalidate the 2023 Trust struck (Aug. 2025).</li>
+        <li>His defamation suit against Ms. Armstrong dismissed on anti-SLAPP (2026).</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>Still open</h3>
+      <ul>
+        <li>Nov. 12, 2026 hearing on sanctions of $3,464,670.93 against Iwuchukwu, Ogike, Anyiam and Aurin Canson.</li>
+        <li>Petitions to declare the 2017 Trust invalid.</li>
+        <li>Mr. Smith's civil suits against the lawyers and Citibank (C24-02896, C26-02683).</li>
+        <li>Subpoenas for the account that received the July 2018 check.</li>
+        <li>State Bar complaints filed in 2026.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="sources">
+  <h2>Sources</h2>
+  <p>Filings in <em>Matter of the 2017 Trust of Patricia Byrd Canson</em>, Contra Costa Super. Ct. P24-02188: Motion for Sanctions (filed Sept. 23, 2026) with declarations of Steven Smith, Shona Armstrong (incl. Exs. 5, 17, 34–38, 54–58), James Lewin, Sheila Webb, M. Patricia Fisher and Mary Beth Barbieri (Mosley). Filings in <em>Iwuchukwu v. Armstrong</em>, LASC 26STCV08065: anti-SLAPP motion, declaration and Compendium of Exhibits (Exs. 1–45). Pin cites above refer to those exhibits and paragraphs.</p>
+  <ul class="doclist"><li><a href="docs/Motion_for_Sanctions.pdf" target="_blank" rel="noopener">Motion for Sanctions, P24-02188 (Sept. 23, 2026)</a></li><li><a href="docs/Smith_Decl_body.pdf" target="_blank" rel="noopener">Declaration of Steven Smith</a></li><li><a href="docs/Smith_Ex_A_2023_Trust.pdf" target="_blank" rel="noopener">Smith Ex. A: 2023 Trust</a></li><li><a href="docs/Smith_Ex_D_Cashiers_Check_Letter.pdf" target="_blank" rel="noopener">Smith Ex. D: cashier's check and cover letter</a></li><li><a href="docs/Smith_Ex_F_Pour_Over_Will.pdf" target="_blank" rel="noopener">Smith Ex. F: pour-over will</a></li><li><a href="docs/Smith_Ex_O_Iwuchukwu_Decl_and_Receipt.pdf" target="_blank" rel="noopener">Smith Ex. O: Iwuchukwu declaration and reissue receipt</a></li><li><a href="docs/Smith_Ex_P.pdf" target="_blank" rel="noopener">Smith Ex. P: reissue receipt</a></li><li><a href="docs/Smith_Ex_Q_Replacement_Check.pdf" target="_blank" rel="noopener">Smith Ex. Q: replacement check</a></li><li><a href="docs/Smith_Ex_Y_2017_Trust.pdf" target="_blank" rel="noopener">Smith Ex. Y: disputed 2017 Trust</a></li><li><a href="docs/Lewin_Decl_body.pdf" target="_blank" rel="noopener">Declaration of James Lewin</a></li><li><a href="docs/Lewin_Ex_O_Surplus_Check.pdf" target="_blank" rel="noopener">Lewin Ex. O: surplus check #9222</a></li><li><a href="docs/Webb_Decl_body.pdf" target="_blank" rel="noopener">Declaration of Sheila Webb</a></li><li><a href="docs/Barbieri_Decl.pdf" target="_blank" rel="noopener">Declaration of Mary Beth Barbieri (Mosley)</a></li><li><a href="docs/Fisher_Decl.pdf" target="_blank" rel="noopener">Declaration of M. Patricia Fisher</a></li><li><a href="docs/Armstrong_Decl_body.pdf" target="_blank" rel="noopener">Declaration of Shona Armstrong (Sept. 23, 2026)</a></li><li><a href="docs/Armstrong_Ex_17_Aurin_Depo.pdf" target="_blank" rel="noopener">Armstrong Ex. 17: Aurin Canson deposition</a></li><li><a href="docs/Armstrong_Ex_34_OSC_Order.pdf" target="_blank" rel="noopener">Armstrong Ex. 34: April 14, 2026 order</a></li><li><a href="docs/Armstrong_Ex_35_Hearing_2026-05-06.pdf" target="_blank" rel="noopener">Armstrong Ex. 35: hearing, May 6, 2026</a></li><li><a href="docs/Armstrong_Ex_36_Hearing_2026-07-01.pdf" target="_blank" rel="noopener">Armstrong Ex. 36: hearing, July 1, 2026</a></li><li><a href="docs/Armstrong_Ex_37_Hearing_2026-08-19.pdf" target="_blank" rel="noopener">Armstrong Ex. 37: hearing, Aug. 19, 2026</a></li><li><a href="docs/Armstrong_Ex_38_Hearing_2026-08-20.pdf" target="_blank" rel="noopener">Armstrong Ex. 38: hearing, Aug. 20, 2026</a></li><li><a href="docs/Armstrong_Ex_54_AntiSLAPP_Ruling.pdf" target="_blank" rel="noopener">Armstrong Ex. 54: anti-SLAPP ruling, 26STCV08065</a></li><li><a href="docs/Armstrong_Ex_56_Replacement_Check.pdf" target="_blank" rel="noopener">Armstrong Ex. 56: replacement check (Citibank)</a></li><li><a href="docs/Compendium_Ex_13_Aurin_Depo.pdf" target="_blank" rel="noopener">Compendium Ex. 13: Aurin Canson deposition excerpt</a></li><li><a href="docs/Compendium_Ex_24_Oct_2024_Letter.pdf" target="_blank" rel="noopener">Compendium Ex. 24: Iwuchukwu letter, Oct. 14, 2024</a></li><li><a href="docs/Compendium_Ex_29_Barbieri_Depo.pdf" target="_blank" rel="noopener">Compendium Ex. 29: notary deposition</a></li><li><a href="docs/Compendium_Ex_44_AntiSLAPP_Denial.pdf" target="_blank" rel="noopener">Compendium Ex. 44: anti-SLAPP denial, C24-02896</a></li></ul>
+  <p class="small">Excerpts of the filed documents. Bank account numbers, phone numbers and private home addresses are blacked out. Ms. Canson's medical records (Smith Ex. E) are not posted.</p>
+  <p class="small">The oppositions to the sanctions motion were not reviewed. This summary will be out of date after the November 12 hearing.</p>
+</section>
+
+<footer>
+  <p class="small">Compiled November 11, 2026 from public court filings. This is a summary of the record, not legal advice or a finding of guilt. Allegations are labeled as such; Mr. Iwuchukwu disputes them.</p>
+</footer>
+</div>
+
+</body>
+</html>
