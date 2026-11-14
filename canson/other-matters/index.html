@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Beyond the Canson Case</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: companion to the Canson case file — same docket styling; a ledger of matters, then one filterable chronology with a matter label and record cite on every entry */
+:root {
+  --bg: #f4f6f7;
+  --surface: #ffffff;
+  --ink: #17222c;
+  --muted: #56636e;
+  --rule: #d6dde2;
+  --accent: #1d5f53;
+  --accent-soft: #e2efec;
+  --court: #24476b;
+  --court-soft: #e3ebf4;
+  --flag: #8a5a00;
+  --flag-soft: #f6ecd6;
+  --display: "Newsreader", Georgia, "Times New Roman", serif;
+  --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #11181e; --surface: #18222a; --ink: #e3e9ed; --muted: #9aa8b2; --rule: #2c3a44;
+    --accent: #6cc3b0; --accent-soft: #19332f; --court: #8fb4dd; --court-soft: #1c2a3a;
+    --flag: #e2b45c; --flag-soft: #33291a; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #11181e; --surface: #18222a; --ink: #e3e9ed; --muted: #9aa8b2; --rule: #2c3a44;
+  --accent: #6cc3b0; --accent-soft: #19332f; --court: #8fb4dd; --court-soft: #1c2a3a;
+  --flag: #e2b45c; --flag-soft: #33291a; color-scheme: dark;
+}
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.6; }
+.wrap { max-width: 840px; margin: 0 auto; padding-block: 40px 72px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: var(--display); font-weight: 600; line-height: 1.2; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2rem, 5vw, 2.8rem); }
+h2 { font-size: 1.6rem; }
+p { margin: 0; max-width: 68ch; }
+a { color: var(--accent); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.eyebrow { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+header { display: grid; gap: 14px; padding-bottom: 24px; border-bottom: 2px solid var(--ink); }
+.lede { font-size: 1.1rem; }
+.docket { display: flex; flex-wrap: wrap; gap: 6px 18px; font-family: var(--mono); font-size: 0.8rem; color: var(--muted); }
+nav { display: flex; flex-wrap: wrap; gap: 6px 16px; padding-block: 14px; border-bottom: 1px solid var(--rule); font-size: 0.9rem; }
+nav a { text-decoration: none; color: var(--muted); }
+nav a:hover { color: var(--accent); }
+section { padding-top: 44px; display: grid; gap: 16px; }
+.notice { background: var(--flag-soft); border-left: 3px solid var(--flag); padding: 14px 16px; font-size: 0.92rem; display: grid; gap: 8px; }
+.notice strong { color: var(--flag); }
+.key { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 0.85rem; color: var(--muted); align-items: center; }
+.tag { display: inline-block; font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; padding: 2px 7px; border-radius: 3px; white-space: nowrap; vertical-align: 2px; }
+.t-court { background: var(--court-soft); color: var(--court); }
+.t-doc { background: var(--accent-soft); color: var(--accent); }
+.t-disp { background: var(--flag-soft); color: var(--flag); }
+
+.figures { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 620px) { .figures { grid-template-columns: 1fr; } }
+.fig { background: var(--surface); border: 1px solid var(--rule); padding: 14px 16px; display: grid; gap: 4px; align-content: start; }
+.fig .v { font-family: var(--display); font-size: 1.9rem; font-weight: 600; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.fig .l { font-size: 0.85rem; color: var(--muted); }
+
+.table-scroll { overflow-x: auto; background: var(--surface); border: 1px solid var(--rule); }
+table { border-collapse: collapse; width: 100%; font-size: 0.9rem; min-width: 640px; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 500; }
+td.num { font-family: var(--mono); text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+td .case { display: block; font-family: var(--mono); font-size: 0.72rem; color: var(--muted); }
+tr:last-child td { border-bottom: none; }
+
+.filters { display: flex; flex-wrap: wrap; gap: 6px; }
+.filters button { font: inherit; font-size: 0.8rem; padding: 4px 10px; border: 1px solid var(--rule); background: var(--surface); color: var(--ink); border-radius: 999px; cursor: pointer; }
+.filters button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+.timeline { list-style: none; margin: 0; padding: 0; display: grid; }
+.timeline li { display: grid; grid-template-columns: 112px 1fr; gap: 4px 18px; padding: 14px 0; border-bottom: 1px solid var(--rule); }
+.timeline .date { font-family: var(--mono); font-size: 0.85rem; color: var(--muted); padding-top: 2px; font-variant-numeric: tabular-nums; }
+.timeline .body { display: grid; gap: 5px; min-width: 0; }
+.timeline .matter { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--accent); }
+.timeline .cite { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); }
+@media (max-width: 560px) { .timeline li { grid-template-columns: 1fr; } }
+.empty { color: var(--muted); font-size: 0.9rem; padding: 14px 0; }
+
+.cast { display: grid; }
+.person { display: grid; grid-template-columns: 220px 1fr; gap: 4px 18px; padding: 14px 0; border-bottom: 1px solid var(--rule); }
+.person .name { font-weight: 600; }
+.person .role { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); display: block; font-weight: 400; }
+.person p { min-width: 0; }
+@media (max-width: 560px) { .person { grid-template-columns: 1fr; } }
+
+.points { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.points li { padding-left: 18px; position: relative; max-width: 70ch; }
+.points li::before { content: ""; position: absolute; left: 0; top: 0.7em; width: 7px; height: 7px; background: var(--accent); }
+.small { font-size: 0.85rem; color: var(--muted); }
+footer { margin-top: 48px; padding-top: 16px; border-top: 2px solid var(--ink); display: grid; gap: 8px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Companion to the Canson case · from court filings and Bar complaints · as of November 13, 2026</div>
+  <h1>Beyond the Canson Case</h1>
+  <p class="lede">Ms. Canson's surplus is not the only money that court filings say went missing around attorney Donald Iwuchukwu and his frequent co-counsel Metu Ogike. Lawsuits and State Bar complaints from at least nine households describe foreclosure surpluses that never reached the owner, "loans" that were never secured or repaid, and client trust funds held back. The amounts alleged come to more than $2 million.</p>
+  <div class="docket">
+    <span>LASC · San Bernardino · Riverside · Orange · Contra Costa</span>
+    <span>State Bar matters 2013–2026</span>
+  </div>
+</header>
+
+<nav aria-label="Sections">
+  <a href="#matters">The matters</a>
+  <a href="#timeline">Timeline</a>
+  <a href="#people">People</a>
+  <a href="#authorities">Authorities</a>
+  <a href="#sources">Sources</a>
+</nav>
+
+<section>
+  <div class="notice">
+    <p><strong>Read this first.</strong> These are allegations made in lawsuits, sworn declarations and State Bar complaints, much of it collected by Shona Armstrong, the lawyer suing Mr. Iwuchukwu in the Canson matter. Mr. Iwuchukwu and Mr. Ogike deny wrongdoing. Except where marked, no court has found that anyone named here stole money. Each entry is labeled by how well it is established.</p>
+    <div class="key">
+      <span><span class="tag t-court">Court action</span> a judge ordered or found it</span>
+      <span><span class="tag t-doc">Documented</span> recorded deed, filing, sworn testimony or archived record</span>
+      <span><span class="tag t-disp">Alleged</span> claimed by a party; not yet decided</span>
+    </div>
+  </div>
+</section>
+
+<section id="matters">
+  <h2>The matters</h2>
+  <div class="figures">
+    <div class="fig"><span class="v">9</span><span class="l">households with specific money-loss allegations, plus two near-misses</span></div>
+    <div class="fig"><span class="v">$2.1M+</span><span class="l">alleged in the matters with stated amounts, Canson included</span></div>
+    <div class="fig"><span class="v">$768K</span><span class="l">of that backed by a court order or bank records (Mooney, Canson)</span></div>
+  </div>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>Who</th><th>What is alleged</th><th>Accused</th><th style="text-align:right">Amount</th><th>Standing</th></tr></thead>
+      <tbody>
+        <tr><td>Patricia Canson<span class="case">P24-02188 · <a href="https://captgouda24.github.io/nicholas-decker.github.io/canson/" target="_blank" rel="noopener">full page</a></span></td><td>Foreclosure surplus deposited to his account, never paid to her</td><td>Iwuchukwu, Rodriguez, Camus</td><td class="num">$474,184</td><td><span class="tag t-doc">Documented</span></td></tr>
+        <tr><td>Simon &amp; Soon Choe<span class="case">23STCV22794</span></td><td>"Secured" loans arranged through the firm; no lien recorded, no repayment</td><td>Iwuchukwu, Ogike, Edison Castro, Anna Kim</td><td class="num">$1,000,000+</td><td><span class="tag t-disp">Alleged</span> sworn</td></tr>
+        <tr><td>Richard Mooney<span class="case">BC507797 · 2017 WL 1371480</span></td><td>Business accounts levied on a judgment he says was obtained with a false proof of service</td><td>Iwuchukwu, Ogike</td><td class="num">$293,896</td><td><span class="tag t-court">Court action</span> restitution ordered</td></tr>
+        <tr><td>Thomas &amp; Helen Meza<span class="case">19STCV34911</span></td><td>Foreclosure surplus unaccounted for; lawyer withdrew and case was dismissed</td><td>Iwuchukwu</td><td class="num">$277,402</td><td><span class="tag t-disp">Alleged</span></td></tr>
+        <tr><td>Johnny Flores<span class="case">26NNCV00935 · Bar 26-O-18209</span></td><td>Settled after client revoked authority; kept the client's share</td><td>Iwuchukwu</td><td class="num">~$100,000</td><td><span class="tag t-disp">Alleged</span></td></tr>
+        <tr><td>Nicole Mays<span class="case">19CHCV00654</span></td><td>Lost home after "rescue" representation; surplus never recovered</td><td>Ogike, Rodriguez, Maria Torrero</td><td class="num">unstated</td><td><span class="tag t-disp">Alleged</span></td></tr>
+        <tr><td>Eun Sook Kim<span class="case">23STCV24091 · Bar 22-O-06927</span></td><td>Suit against the same group as the Choe case</td><td>Iwuchukwu, Ogike, Anna Kim</td><td class="num">unstated</td><td><span class="tag t-disp">Alleged</span></td></tr>
+        <tr><td>Joy Heesun Oh<span class="case">Bar 22-O-07629</span></td><td>State Bar complaint</td><td>Ogike, Iwuchukwu</td><td class="num">unstated</td><td><span class="tag t-disp">Alleged</span></td></tr>
+        <tr><td>Stella Brin<span class="case">CIVSB2606160</span></td><td>Paid for legal work; nothing done; firm unreachable</td><td>Iwuchukwu</td><td class="num">unstated</td><td><span class="tag t-disp">Alleged</span></td></tr>
+        <tr><td>Robert Jacobson<span class="case">BP110463 · OC 30-2026-01543879</span></td><td>Home deeded into a trust with Iwuchukwu as trustee; owner says he never meant to give up control. Reversed.</td><td>Rodriguez, Carlos Castillo</td><td class="num">none yet</td><td><span class="tag t-doc">Documented</span> deed</td></tr>
+        <tr><td>Tokaruk trust<span class="case">22STPB09599</span></td><td>Iwuchukwu is trustee of a competing trust and claims compensation</td><td>Iwuchukwu (Ogike as counsel)</td><td class="num">unstated</td><td><span class="tag t-disp">Alleged</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="small">The $1,000,000+ figure is the Choes' sworn statement of their total losses; their complaint itemizes at least $160,000. The Mays, Kim, Oh and Brin amounts are not stated in the filings reviewed.</p>
+</section>
+
+<section id="timeline">
+  <h2>Timeline</h2>
+  <div class="filters" role="group" aria-label="Filter by matter" id="filters"></div>
+  <ol class="timeline" id="tl">
+    <li data-m="background"><span class="date">2005</span><div class="body"><span class="matter">Background</span><p><span class="tag t-court">Court action</span> Martha Rodriguez is indicted in a federal foreclosure-rescue fraud case using straw buyers.</p><span class="cite">C.D. Cal. 2:05-cr-01157-GHK</span></div></li>
+    <li data-m="background"><span class="date">2009</span><div class="body"><span class="matter">Background</span><p><span class="tag t-court">Court action</span> Cheryl "Cher" Hernandez Camus is sentenced to 63 months for wire fraud in a real estate investment scheme.</p><span class="cite">N.D. Cal. 3:08-cr-00231-MHP</span></div></li>
+    <li data-m="background"><span class="date">2010-02</span><div class="body"><span class="matter">Background</span><p><span class="tag t-court">Court action</span> Rodriguez is sentenced to 120 months. The FBI put the scheme at roughly $13 million. She later works as Mr. Iwuchukwu's paralegal.</p><span class="cite">FBI Los Angeles release, Feb. 18, 2010, cited in Armstrong Bar complaint (July 7, 2026)</span></div></li>
+    <li data-m="mooney"><span class="date">2013</span><div class="body"><span class="matter">Mooney</span><p><span class="tag t-doc">Documented</span> Wage suit against Kensington Caterers filed; Mr. Iwuchukwu and Mr. Ogike are later named as cross-defendants.</p><span class="cite">LASC BC507797</span></div></li>
+    <li data-m="mooney"><span class="date">2017-04</span><div class="body"><span class="matter">Mooney</span><p><span class="tag t-court">Court action</span> The Court of Appeal affirms an order requiring Mr. Iwuchukwu and Mr. Ogike to pay restitution of $293,896.07 taken by levy on the business's bank accounts. Ms. Armstrong says the levy rested on a fake proof of service and that the money was never repaid.</p><span class="cite">Rosas v. Kensington Caterers, Inc., 2017 WL 1371480 (unpub.); Armstrong Decl. ¶140 (Sept. 23, 2026)</span></div></li>
+    <li data-m="choe"><span class="date">2018-10</span><div class="body"><span class="matter">Choe</span><p><span class="tag t-disp">Alleged</span> Anna Kim (also known as Annabelle Arce) arranges a $160,000 promissory note from the Choes, to be secured by a deed of trust prepared by the Law Offices of Donald Iwuchukwu and released by attorney Edison Castro. No lien is recorded and nothing is repaid.</p><span class="cite">Choe Third Amended Complaint ¶¶46–50, filed with Choe Decl. (Sept. 23, 2026)</span></div></li>
+    <li data-m="meza"><span class="date">2018-12-17</span><div class="body"><span class="matter">Meza</span><p><span class="tag t-disp">Alleged</span> The Mezas' home is sold at foreclosure. Public notices show about $277,402.40 in surplus that Ms. Armstrong could not trace.</p><span class="cite">Armstrong Decl. ¶126</span></div></li>
+    <li data-m="mays"><span class="date">2019-04-08</span><div class="body"><span class="matter">Mays</span><p><span class="tag t-doc">Documented</span> Nicole Mays's Santa Clarita home is sold at foreclosure to Magnum Property Investments while her loan modification application is pending. Maria Torrero then visits, says she works for Mr. Ogike's office, and introduces Ms. Mays to Rodriguez and Mr. Ogike.</p><span class="cite">LA Recorder #20190305911; Mays Second Amended Complaint ¶27</span></div></li>
+    <li data-m="meza"><span class="date">2019-10-01</span><div class="body"><span class="matter">Meza</span><p><span class="tag t-doc">Documented</span> Mr. Iwuchukwu files a wrongful-foreclosure suit for the Mezas.</p><span class="cite">LASC 19STCV34911</span></div></li>
+    <li data-m="mays"><span class="date">2020-10-28</span><div class="body"><span class="matter">Mays</span><p><span class="tag t-disp">Alleged</span> Ms. Mays's amended complaint says Mr. Ogike's paralegals, including Rodriguez and Torrero, failed to answer discovery or defend her eviction, that Mr. Ogike did not supervise them, and that he never obtained her surplus. Ms. Armstrong goes further, saying the paperwork was altered so the surplus went to Mr. Ogike's office.</p><span class="cite">LASC 19CHCV00654, SAC ¶¶27, 100–109; Armstrong Decl. ¶¶137–139</span></div></li>
+    <li data-m="meza"><span class="date">2021</span><div class="body"><span class="matter">Meza</span><p><span class="tag t-court">Court action</span> Mr. Iwuchukwu withdraws on April 15, leaving the Mezas without a lawyer. The case is dismissed on demurrer without leave to amend on December 29.</p><span class="cite">Armstrong Decl. Exs. 46–47</span></div></li>
+    <li data-m="choe"><span class="date">2022</span><div class="body"><span class="matter">Choe · Kim · Oh</span><p><span class="tag t-doc">Documented</span> State Bar complaints filed by Simon Choe (against Mr. Ogike and Mr. Iwuchukwu), Eun Sook Kim and Joy Heesun Oh. Ms. Armstrong says the Bar closed them as civil matters.</p><span class="cite">Bar Nos. 22-O-00124, 22-O-00126, 22-O-06927, 22-O-07629; Armstrong Decl. ¶165</span></div></li>
+    <li data-m="choe"><span class="date">2022-08-18</span><div class="body"><span class="matter">Choe</span><p><span class="tag t-doc">Documented</span> Mr. Iwuchukwu sues Simon Choe for defamation after Mr. Choe warns others in Koreatown.</p><span class="cite">LASC 22STCV26884; Choe Decl. ¶¶4–5</span></div></li>
+    <li data-m="choe"><span class="date">2023-09-20</span><div class="body"><span class="matter">Choe</span><p><span class="tag t-doc">Documented</span> The Choes sue Anna Kim, Edison Castro, Mr. Iwuchukwu, Mr. Ogike and others for fraud, conspiracy and conversion. Mr. Choe swears they lost more than $1 million. A related suit by Eun S. Kim follows.</p><span class="cite">LASC 23STCV22794; LASC 23STCV24091; Choe Decl. ¶¶2, 9–10</span></div></li>
+    <li data-m="choe"><span class="date">2024-01-25</span><div class="body"><span class="matter">Choe</span><p><span class="tag t-doc">Documented</span> On the eve of trial, Mr. Iwuchukwu drops his defamation suit and files a "Notice of Settlement." Mr. Choe swears there was no settlement and no settlement talk.</p><span class="cite">Choe Decl. ¶¶6–8 and Ex. A</span></div></li>
+    <li data-m="flores"><span class="date">2024-04-19</span><div class="body"><span class="matter">Flores</span><p><span class="tag t-doc">Documented</span> Johnny Flores hires Mr. Iwuchukwu in a family partition case. About $230,088.52 of sale proceeds goes into Mr. Iwuchukwu's client trust account. The fee agreement is never signed by the lawyer.</p><span class="cite">Flores Bar complaint ¶¶1–10 (San Bernardino CIVSB2124887)</span></div></li>
+    <li data-m="brin"><span class="date">2025-09-05</span><div class="body"><span class="matter">Brin</span><p><span class="tag t-disp">Alleged</span> Stella Brin files a handwritten Bar complaint: she paid, "nothing done," the office cannot be reached. She marks it as theft, elder abuse and abandonment.</p><span class="cite">Brin Bar complaint (Sept. 5, 2025); later suit San Bernardino CIVSB2606160</span></div></li>
+    <li data-m="flores"><span class="date">2025-10-21</span><div class="body"><span class="matter">Flores</span><p><span class="tag t-disp">Alleged</span> Mr. Flores emails that he does not want to go ahead with the settlement. The other side has not yet signed.</p><span class="cite">Flores Bar complaint ¶¶15–17</span></div></li>
+    <li data-m="flores"><span class="date">2025-11-07</span><div class="body"><span class="matter">Flores</span><p><span class="tag t-disp">Alleged</span> The settlement closes anyway: $130,088.55 goes from Mr. Iwuchukwu's trust account to opposing counsel and the case is dismissed. The remaining roughly $100,000 is never paid to Mr. Flores or accounted for.</p><span class="cite">Flores Bar complaint ¶¶18–26</span></div></li>
+    <li data-m="jacobson"><span class="date">2026-01-20</span><div class="body"><span class="matter">Jacobson</span><p><span class="tag t-doc">Documented</span> A deed is recorded moving Robert Jacobson's Laguna Niguel home into the "Robert Jacobson Living Trust, Donald Iwuchukwu, Trustee/Attorney." Mr. Jacobson later says he dealt only with Rodriguez and Carlos Castillo, was told he was not giving up control, and was never given a copy of the trust.</p><span class="cite">OC Recorder 2026000012999; Armstrong Decl. ¶¶113–121</span></div></li>
+    <li data-m="flores"><span class="date">2026-02-10</span><div class="body"><span class="matter">Flores</span><p><span class="tag t-doc">Documented</span> After demand letters go unanswered, Mr. Flores sues and files a State Bar complaint through new counsel.</p><span class="cite">LASC 26NNCV00935; Bar 26-O-18209</span></div></li>
+    <li data-m="jacobson"><span class="date">2026-03-06</span><div class="body"><span class="matter">Jacobson</span><p><span class="tag t-doc">Documented</span> Mr. Jacobson fires Mr. Iwuchukwu and records a quitclaim returning the house to himself. On April 30, Mr. Iwuchukwu writes that he represents Mr. Jacobson again, and later moves to quash Mr. Jacobson's subpoena. Hearing set for December 2, 2026.</p><span class="cite">Armstrong Decl. ¶¶122–125 and Exs. 41–45</span></div></li>
+    <li data-m="conduct"><span class="date">2026-06-16</span><div class="body"><span class="matter">Conduct</span><p><span class="tag t-doc">Documented</span> A licensed process server serves Rodriguez at Mr. Iwuchukwu's Burbank office. He swears that Mr. Iwuchukwu pulled him out of an elevator and later, in the garage with Mr. Ogike present, spat into his mouth. A co-worker filmed the garage encounter. Burbank police took a report.</p><span class="cite">Tupanjanin Decl. ¶¶11–41; Burbank PD incident 26-31846</span></div></li>
+    <li data-m="advertising"><span class="date">2026-07-12</span><div class="body"><span class="matter">Advertising</span><p><span class="tag t-doc">Documented</span> The Internet Archive captures probatelawyerla.com showing testimonials from "Sarah Johnson," "Emily Thompsone" and "Michael Rodriguez" and multimillion-dollar verdicts such as "Michael R. vs Elianor Trust."</p><span class="cite"><a href="https://web.archive.org/web/20260712121355/https://probatelawyerla.com/" target="_blank" rel="noopener">Wayback snapshot, July 12, 2026</a></span></div></li>
+    <li data-m="advertising"><span class="date">2026-08-26</span><div class="body"><span class="matter">Advertising</span><p><span class="tag t-doc">Documented</span> Ms. Armstrong's Bar complaint shows the testimonial photos are stock images, the advertised verdicts cannot be found, and the "Iwuchukwu" headshot is a stock photo. A man quoted in a Google review confirms through his lawyer that he never knew Mr. Iwuchukwu.</p><span class="cite"><a href="https://captgouda24.github.io/nicholas-decker.github.io/canson/docs/Armstrong_Bar_Complaint_3_False_Advertising.pdf" target="_blank" rel="noopener">Armstrong Bar complaint #3</a></span></div></li>
+    <li data-m="advertising"><span class="date">2026-10</span><div class="body"><span class="matter">Advertising</span><p><span class="tag t-doc">Documented</span> probatelawyerla.com now redirects to "Stolen Inheritance Attorney," with the same Burbank address and phone number. probateexpertlawyer.com still advertises a $3.5 million "Maria S. vs. Wells Fargo" verdict.</p><span class="cite"><a href="https://web.archive.org/web/20261114005110/https://stoleninheritanceattorney.com/" target="_blank" rel="noopener">Wayback, Nov. 13, 2026</a> · <a href="https://web.archive.org/web/20261114004829/https://www.probateexpertlawyer.com/" target="_blank" rel="noopener">probateexpertlawyer.com</a></span></div></li>
+  </ol>
+  <p class="empty" id="empty" hidden>No entries for this matter.</p>
+</section>
+
+<section id="people">
+  <h2>People who recur</h2>
+  <div class="cast">
+    <div class="person"><div class="name">Donald Iwuchukwu<span class="role">Attorney, Burbank</span></div><p>Canson, Choe, Kim, Mooney, Meza, Flores, Brin, Jacobson, Tokaruk; the websites; the June 16 incident.</p></div>
+    <div class="person"><div class="name">Metu Ogike<span class="role">Attorney, Valley Village</span></div><p>Canson, Choe, Kim, Oh, Mooney, Mays; counsel in Tokaruk; present on June 16.</p></div>
+    <div class="person"><div class="name">Martha Rodriguez<span class="role">Paralegal; 2010 federal fraud conviction</span></div><p>Canson, Mays, Jacobson. Served the June 16 subpoena.</p></div>
+    <div class="person"><div class="name">Cheryl "Cher" Camus Tuano<span class="role">Assistant; 2009 federal fraud conviction</span></div><p>Canson: Aurin Canson testified she met him at Ms. Canson's house with a locksmith in 2023, sent by Rodriguez.</p></div>
+    <div class="person"><div class="name">Anna Kim<span class="role">Also known as Annabelle Arce, Jiyun Kim</span></div><p>Choe and Eun S. Kim suits, as the person who arranged the loans. Listed as an Iwuchukwu assistant in a 2026 Bar complaint.</p></div>
+    <div class="person"><div class="name">Carlos Castillo<span class="role">Office staff</span></div><p>Jacobson, as one of two staff Mr. Jacobson dealt with; Canson, canvassing neighbors with an Iwuchukwu business card.</p></div>
+    <div class="person"><div class="name">Edison Antonio Castro<span class="role">Attorney</span></div><p>Choe, as the attorney whose lien the Choes' loan was supposed to replace.</p></div>
+    <div class="person"><div class="name">Maria Torrero<span class="role">Said she worked for Mr. Ogike's office</span></div><p>Mays, as the person who approached her after the foreclosure sale.</p></div>
+    <div class="person"><div class="name">Christian Anyiam, Charles Odiase<span class="role">Attorneys</span></div><p>Defense counsel for the group in the Canson and Choe cases. Mr. Anyiam is also named in the Canson sanctions motion.</p></div>
+  </div>
+</section>
+
+<section id="authorities">
+  <h2>What authorities have done</h2>
+  <ul class="points">
+    <li>Since March 2025, Ms. Armstrong has filed reports with the Contra Costa DA (No. 013-1139031), the Los Angeles and Orange County DAs, the FTC (No. 192145463), the FBI, the U.S. Department of Justice, the OCC, the California Attorney General and the State Bar. She says the responses have called these civil matters for now.</li>
+    <li>Ms. Armstrong says the State Bar has previously closed complaints from Ms. Brin, Mr. Choe, Mr. Mooney, Ms. Kim, Ms. Oh and herself.</li>
+    <li>Two courts have ruled against the group on the merits so far: the 2017 restitution order in the Mooney matter, and the October 2025 denial of their anti-SLAPP motions in the Canson civil case.</li>
+  </ul>
+</section>
+
+<section id="sources">
+  <h2>Sources</h2>
+  <p>Declarations of Shona Armstrong (Sept. 23, 2026) and Simon Choe (Sept. 23, 2026) filed in P24-02188; the Second Amended Complaint in Mays v. Mortgage Management Consultants (Armstrong Decl. Ex. 53); State Bar complaints by Johnny Flores, Stella Brin and Shona Armstrong; the declaration of process server Giorgio Tupanjanin; Internet Archive snapshots of the firm's websites. For the Canson matter and its posted documents, see <a href="https://captgouda24.github.io/nicholas-decker.github.io/canson/" target="_blank" rel="noopener">The Canson Surplus Case</a>.</p>
+  <p class="small">Private complainants are named as they appear in public court filings. Home addresses and phone numbers are left out.</p>
+</section>
+
+<footer>
+  <p class="small">Compiled from court records. Mr. Iwuchukwu, Mr. Ogike and the others named have not been convicted of any crime in these matters, and most of these claims have not been decided. Corrections are welcome.</p>
+</footer>
+</div>
+
+<script>
+(function () {
+  var labels = { all: "All", background: "Background", mooney: "Mooney", choe: "Choe · Kim · Oh", meza: "Meza", mays: "Mays", flores: "Flores", brin: "Brin", jacobson: "Jacobson", conduct: "Conduct", advertising: "Advertising" };
+  var box = document.getElementById("filters");
+  var items = Array.prototype.slice.call(document.querySelectorAll("#tl li"));
+  var empty = document.getElementById("empty");
+  function apply(key) {
+    var shown = 0;
+    items.forEach(function (li) { var on = key === "all" || li.getAttribute("data-m") === key; li.hidden = !on; if (on) shown++; });
+    empty.hidden = shown > 0;
+    Array.prototype.forEach.call(box.children, function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-k") === key)); });
+  }
+  Object.keys(labels).forEach(function (k) {
+    var b = document.createElement("button");
+    b.type = "button"; b.id = "f-" + k; b.setAttribute("data-k", k); b.textContent = labels[k];
+    b.addEventListener("click", function () { apply(k); });
+    box.appendChild(b);
+  });
+  apply("all");
+})();
+</script>
+
+</body>
+</html>
