@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Canson Document Index</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column styled like a case file — docket header, ledger table, dated entries with record cites in the margin */
+:root {
+  --bg: #f4f6f7;
+  --surface: #ffffff;
+  --ink: #17222c;
+  --muted: #56636e;
+  --rule: #d6dde2;
+  --accent: #1d5f53;
+  --accent-soft: #e2efec;
+  --court: #24476b;
+  --court-soft: #e3ebf4;
+  --flag: #8a5a00;
+  --flag-soft: #f6ecd6;
+  --display: "Newsreader", Georgia, "Times New Roman", serif;
+  --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #11181e; --surface: #18222a; --ink: #e3e9ed; --muted: #9aa8b2; --rule: #2c3a44;
+    --accent: #6cc3b0; --accent-soft: #19332f; --court: #8fb4dd; --court-soft: #1c2a3a;
+    --flag: #e2b45c; --flag-soft: #33291a; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #11181e; --surface: #18222a; --ink: #e3e9ed; --muted: #9aa8b2; --rule: #2c3a44;
+  --accent: #6cc3b0; --accent-soft: #19332f; --court: #8fb4dd; --court-soft: #1c2a3a;
+  --flag: #e2b45c; --flag-soft: #33291a; color-scheme: dark;
+}
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.6; }
+.wrap { max-width: 800px; margin: 0 auto; padding-block: 40px 72px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: var(--display); font-weight: 600; line-height: 1.2; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2rem, 5vw, 2.8rem); }
+h2 { font-size: 1.6rem; margin-bottom: 14px; }
+h3 { font-size: 1.15rem; }
+p { margin: 0; max-width: 68ch; }
+a { color: var(--accent); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.mono, .cite, td.num { font-family: var(--mono); }
+.eyebrow { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+header { display: grid; gap: 14px; padding-bottom: 24px; border-bottom: 2px solid var(--ink); }
+.docket { display: flex; flex-wrap: wrap; gap: 6px 18px; font-family: var(--mono); font-size: 0.8rem; color: var(--muted); }
+.lede { font-size: 1.1rem; }
+
+nav { display: flex; flex-wrap: wrap; gap: 6px 16px; padding-block: 14px; border-bottom: 1px solid var(--rule); font-size: 0.9rem; }
+nav a { text-decoration: none; color: var(--muted); }
+nav a:hover { color: var(--accent); }
+
+section { padding-top: 44px; display: grid; gap: 16px; }
+
+.notice { background: var(--flag-soft); border-left: 3px solid var(--flag); padding: 14px 16px; font-size: 0.92rem; display: grid; gap: 8px; }
+.notice strong { color: var(--flag); }
+
+.key { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 0.85rem; color: var(--muted); align-items: center; }
+.tag { display: inline-block; font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; padding: 2px 7px; border-radius: 3px; white-space: nowrap; vertical-align: 2px; }
+.t-court { background: var(--court-soft); color: var(--court); }
+.t-doc { background: var(--accent-soft); color: var(--accent); }
+.t-disp { background: var(--flag-soft); color: var(--flag); }
+
+.points { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.points li { padding-left: 18px; position: relative; max-width: 70ch; }
+.points li::before { content: ""; position: absolute; left: 0; top: 0.7em; width: 7px; height: 7px; background: var(--accent); }
+
+.table-scroll { overflow-x: auto; background: var(--surface); border: 1px solid var(--rule); }
+table { border-collapse: collapse; width: 100%; font-size: 0.93rem; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-family: var(--mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 500; }
+td.num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+tr.total td { font-weight: 600; border-top: 2px solid var(--ink); }
+tr.zero td { color: var(--flag); font-weight: 600; }
+tr:last-child td { border-bottom: none; }
+
+.timeline { list-style: none; margin: 0; padding: 0; display: grid; }
+.timeline li { display: grid; grid-template-columns: 110px 1fr; gap: 4px 18px; padding: 14px 0; border-bottom: 1px solid var(--rule); }
+.timeline .date { font-family: var(--mono); font-size: 0.85rem; color: var(--muted); padding-top: 2px; font-variant-numeric: tabular-nums; }
+.timeline .body { display: grid; gap: 4px; min-width: 0; }
+.timeline .cite { font-size: 0.75rem; color: var(--muted); }
+.timeline li.key-event .date { color: var(--accent); font-weight: 500; }
+@media (max-width: 560px) { .timeline li { grid-template-columns: 1fr; } }
+
+.accounts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 620px) { .accounts { grid-template-columns: 1fr; } }
+.account { background: var(--surface); border: 1px solid var(--rule); padding: 16px; display: grid; gap: 8px; align-content: start; }
+.account .n { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); }
+.account blockquote { margin: 0; font-family: var(--display); font-size: 1.08rem; line-height: 1.4; }
+.account .cite { font-size: 0.75rem; color: var(--muted); }
+
+.cast { display: grid; gap: 0; }
+.person { display: grid; grid-template-columns: 210px 1fr; gap: 4px 18px; padding: 14px 0; border-bottom: 1px solid var(--rule); }
+.person .name { font-weight: 600; }
+.person .role { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); display: block; font-weight: 400; }
+.person p { min-width: 0; }
+@media (max-width: 560px) { .person { grid-template-columns: 1fr; } }
+.cast-group { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); padding-top: 18px; padding-bottom: 4px; border-bottom: 1px solid var(--ink); }
+
+.two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 620px) { .two { grid-template-columns: 1fr; } }
+.panel { background: var(--surface); border: 1px solid var(--rule); padding: 16px; display: grid; gap: 10px; align-content: start; }
+.panel ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 0.93rem; }
+
+.doclist { margin: 0; padding-left: 18px; columns: 2; column-gap: 24px; font-size: 0.92rem; }
+.doclist li { break-inside: avoid; padding-block: 2px; }
+@media (max-width: 620px) { .doclist { columns: 1; } }
+.small { font-size: 0.85rem; color: var(--muted); }
+footer { margin-top: 48px; padding-top: 16px; border-top: 2px solid var(--ink); display: grid; gap: 8px; }
+
+.group { display: grid; gap: 6px; }
+.group h3 { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); font-weight: 500; padding-bottom: 4px; border-bottom: 1px solid var(--ink); }
+.group h3 .count { color: var(--muted); }
+.group .sub { font-size: 0.85rem; color: var(--muted); }
+.doclist a { overflow-wrap: anywhere; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Document index · from court filings and Bar complaints</div>
+  <h1>Documents</h1>
+  <p class="lede">The filings and exhibits cited on the <a href="../">Canson case</a> and <a href="../other-matters/">Other Matters</a> pages, grouped by source.</p>
+</header>
+
+<nav aria-label="Pages">
+  <a href="../">← Canson case</a>
+  <a href="../other-matters/">← Other matters</a>
+  <a href="#canson">The Canson case documents</a>
+  <a href="#other">Other matters documents</a>
+</nav>
+
+<section id="canson">
+  <h2>The Canson case</h2>
+  <div class="group">
+    <h3>Motion and declarations <span class="count">(12)</span></h3>
+    <p class="sub">Filed in P24-02188 (Contra Costa Super. Ct.)</p>
+    <ul class="doclist"><li><a href="Motion_for_Sanctions.pdf" target="_blank" rel="noopener">Motion for Sanctions, P24-02188 (Sept. 23, 2026)</a></li><li><a href="Smith_Decl_body.pdf" target="_blank" rel="noopener">Declaration of Steven Smith</a></li><li><a href="Lewin_Decl_body.pdf" target="_blank" rel="noopener">Declaration of James Lewin</a></li><li><a href="Webb_Decl_body.pdf" target="_blank" rel="noopener">Declaration of Sheila Webb</a></li><li><a href="Barbieri_Decl.pdf" target="_blank" rel="noopener">Declaration of Mary Beth Barbieri (Mosley)</a></li><li><a href="Fisher_Decl.pdf" target="_blank" rel="noopener">Declaration of M. Patricia Fisher</a></li><li><a href="Armstrong_Decl_body.pdf" target="_blank" rel="noopener">Declaration of Shona Armstrong (Sept. 23, 2026)</a></li><li><a href="Clark_Decl.pdf" target="_blank" rel="noopener">Declaration of Faythe Canson Clark</a></li><li><a href="Tuffnell_Decl.pdf" target="_blank" rel="noopener">Declaration of Scott Tuffnell</a></li><li><a href="Klein_Decl.pdf" target="_blank" rel="noopener">Declaration of Abraham Klein (investigator)</a></li><li><a href="Aruda_Decl.pdf" target="_blank" rel="noopener">Declaration of Nicole Aruda</a></li><li><a href="Tupanjanin_Decl.pdf" target="_blank" rel="noopener">Declaration of Giorgio Tupanjanin (process server)</a></li></ul>
+  </div>
+  <div class="group">
+    <h3>Smith exhibits <span class="count">(13)</span></h3>
+    <ul class="doclist"><li><a href="Smith_Ex_A_2023_Trust.pdf" target="_blank" rel="noopener">Smith Ex. A: 2023 Trust</a></li><li><a href="Smith_Ex_D_Cashiers_Check_Letter.pdf" target="_blank" rel="noopener">Smith Ex. D: cashier's check and cover letter</a></li><li><a href="Smith_Ex_F_Pour_Over_Will.pdf" target="_blank" rel="noopener">Smith Ex. F: pour-over will</a></li><li><a href="Smith_Ex_G_Quitclaim_2023.pdf" target="_blank" rel="noopener">Smith Ex. G: 2023 deed of the house to her trust</a></li><li><a href="Smith_Ex_I_Letter_to_Citibank.pdf" target="_blank" rel="noopener">Smith Ex. I: letter to Citibank, Aug. 2023</a></li><li><a href="Smith_Ex_K_Citibank_Email.pdf" target="_blank" rel="noopener">Smith Ex. K: Citibank email, “cancelled by the remitter”</a></li><li><a href="Smith_Ex_L_Demand_Letter.pdf" target="_blank" rel="noopener">Smith Ex. L: demand to reissue the check, Oct. 2024</a></li><li><a href="Smith_Ex_M_Iwuchukwu_Oct_2024_Letter.pdf" target="_blank" rel="noopener">Smith Ex. M: Iwuchukwu's reply, Oct. 2024</a></li><li><a href="Smith_Ex_O_Iwuchukwu_Decl_and_Receipt.pdf" target="_blank" rel="noopener">Smith Ex. O: Iwuchukwu declaration and reissue receipt</a></li><li><a href="Smith_Ex_P.pdf" target="_blank" rel="noopener">Smith Ex. P: reissue receipt</a></li><li><a href="Smith_Ex_Q_Replacement_Check.pdf" target="_blank" rel="noopener">Smith Ex. Q: replacement check</a></li><li><a href="Smith_Ex_R_Pat_Signatures.pdf" target="_blank" rel="noopener">Smith Ex. R: Ms. Canson's genuine signatures</a></li><li><a href="Smith_Ex_Y_2017_Trust.pdf" target="_blank" rel="noopener">Smith Ex. Y: disputed 2017 Trust</a></li></ul>
+  </div>
+  <div class="group">
+    <h3>Lewin exhibits <span class="count">(7)</span></h3>
+    <ul class="doclist"><li><a href="Lewin_Ex_I_Authorization.pdf" target="_blank" rel="noopener">Lewin Ex. I: Iwuchukwu's authorization to act for Ms. Canson</a></li><li><a href="Lewin_Ex_J_Clarence_2005_Trust.pdf" target="_blank" rel="noopener">Lewin Ex. J: the 2005 “Clarence Canson” trust</a></li><li><a href="Lewin_Ex_K_Surplus_Claim.pdf" target="_blank" rel="noopener">Lewin Ex. K: surplus claim filed for Ms. Canson</a></li><li><a href="Lewin_Ex_L_Surplus_Notice.pdf" target="_blank" rel="noopener">Lewin Ex. L: notice of surplus funds</a></li><li><a href="Lewin_Ex_M_Indemnity_Agreement.pdf" target="_blank" rel="noopener">Lewin Ex. M: indemnity agreement, Feb. 2017</a></li><li><a href="Lewin_Ex_N_Servicer_Check.pdf" target="_blank" rel="noopener">Lewin Ex. N: payoff check to the loan servicer</a></li><li><a href="Lewin_Ex_O_Surplus_Check.pdf" target="_blank" rel="noopener">Lewin Ex. O: surplus check #9222</a></li></ul>
+  </div>
+  <div class="group">
+    <h3>Armstrong exhibits <span class="count">(9)</span></h3>
+    <ul class="doclist"><li><a href="Armstrong_Ex_1_Defamation_Dismissal.pdf" target="_blank" rel="noopener">Armstrong Ex. 1: dismissal of Iwuchukwu v. Armstrong, 26STCV08065</a></li><li><a href="Armstrong_Ex_17_Aurin_Depo.pdf" target="_blank" rel="noopener">Armstrong Ex. 17: Aurin Canson deposition</a></li><li><a href="Armstrong_Ex_34_OSC_Order.pdf" target="_blank" rel="noopener">Armstrong Ex. 34: April 14, 2026 order</a></li><li><a href="Armstrong_Ex_35_Hearing_2026-05-06.pdf" target="_blank" rel="noopener">Armstrong Ex. 35: hearing, May 6, 2026</a></li><li><a href="Armstrong_Ex_36_Hearing_2026-07-01.pdf" target="_blank" rel="noopener">Armstrong Ex. 36: hearing, July 1, 2026</a></li><li><a href="Armstrong_Ex_37_Hearing_2026-08-19.pdf" target="_blank" rel="noopener">Armstrong Ex. 37: hearing, Aug. 19, 2026</a></li><li><a href="Armstrong_Ex_38_Hearing_2026-08-20.pdf" target="_blank" rel="noopener">Armstrong Ex. 38: hearing, Aug. 20, 2026</a></li><li><a href="Armstrong_Ex_54_AntiSLAPP_Ruling.pdf" target="_blank" rel="noopener">Armstrong Ex. 54: anti-SLAPP denial, C24-02896 (Oct. 29, 2025)</a></li><li><a href="Armstrong_Ex_56_Replacement_Check.pdf" target="_blank" rel="noopener">Armstrong Ex. 56: replacement check (Citibank)</a></li></ul>
+  </div>
+  <div class="group">
+    <h3>Compendium of Exhibits <span class="count">(5)</span></h3>
+    <p class="sub">Iwuchukwu v. Armstrong, LASC 26STCV08065</p>
+    <ul class="doclist"><li><a href="Compendium_Ex_13_Aurin_Depo.pdf" target="_blank" rel="noopener">Compendium Ex. 13: Aurin Canson deposition excerpt</a></li><li><a href="Compendium_Ex_24_Oct_2024_Letter.pdf" target="_blank" rel="noopener">Compendium Ex. 24: Iwuchukwu letter, Oct. 14, 2024</a></li><li><a href="Compendium_Ex_26_Interspousal_Deed.pdf" target="_blank" rel="noopener">Compendium Ex. 26: 2003 interspousal deed</a></li><li><a href="Compendium_Ex_29_Barbieri_Depo.pdf" target="_blank" rel="noopener">Compendium Ex. 29: notary deposition</a></li><li><a href="Compendium_Ex_44_AntiSLAPP_Denial.pdf" target="_blank" rel="noopener">Compendium Ex. 44: anti-SLAPP denial, C24-02896</a></li></ul>
+  </div>
+  <div class="group">
+    <h3>Depositions <span class="count">(2)</span></h3>
+    <ul class="doclist"><li><a href="Iwuchukwu_Deposition_2026-02-03.pdf" target="_blank" rel="noopener">Deposition of Donald Iwuchukwu, Feb. 3, 2026</a></li><li><a href="Prokh_Citibank_Deposition_2026-04-24.pdf" target="_blank" rel="noopener">Deposition of Alex Prokh (Citibank), Apr. 24, 2026</a></li></ul>
+  </div>
+  <div class="group">
+    <h3>The house <span class="count">(2)</span></h3>
+    <ul class="doclist"><li><a href="Pinole_Grant_Deed_2017.pdf" target="_blank" rel="noopener">Grant deed for the Pinole house, Oct. 2017</a></li><li><a href="Iwuchukwu_Email_Five_Day_Notice.pdf" target="_blank" rel="noopener">Iwuchukwu's email on the house, Oct. 2023</a></li></ul>
+  </div>
+  <div class="group">
+    <h3>State Bar complaints <span class="count">(5)</span></h3>
+    <ul class="doclist"><li><a href="Armstrong_Bar_Complaint_1_Forgery.pdf" target="_blank" rel="noopener">Armstrong State Bar complaint #1: forgery</a></li><li><a href="Armstrong_Bar_Complaint_2_Forcible_Detainer.pdf" target="_blank" rel="noopener">Armstrong State Bar complaint #2: the house</a></li><li><a href="Armstrong_Bar_Complaint_3_False_Advertising.pdf" target="_blank" rel="noopener">Armstrong State Bar complaint #3: false advertising (Aug. 26, 2026)</a></li><li><a href="Armstrong_Bar_Complaint_Process_Server.pdf" target="_blank" rel="noopener">Armstrong State Bar complaint: the process server</a></li><li><a href="Webb_Bar_Complaint.pdf" target="_blank" rel="noopener">Sheila Webb's State Bar complaint</a></li></ul>
+  </div>
+  <div class="group">
+    <h3>Criminal records of associates <span class="count">(5)</span></h3>
+    <p class="sub">Martha Rodriguez and Cheryl Camus (Smith Decl. exhibits)</p>
+    <ul class="doclist"><li><a href="Smith_Ex_S_Rodriguez_Indictment.pdf" target="_blank" rel="noopener">Smith Ex. S: Rodriguez indictment, C.D. Cal. 2:05-cr-01157-GHK</a></li><li><a href="Smith_Ex_V_Rodriguez_Judgment.pdf" target="_blank" rel="noopener">Smith Ex. V: Rodriguez judgment, Feb. 17, 2010</a></li><li><a href="Smith_Ex_U_FBI_Release_2010.pdf" target="_blank" rel="noopener">Smith Ex. U: FBI Los Angeles release, Feb. 18, 2010</a></li><li><a href="Smith_Ex_W_Camus_Indictment.pdf" target="_blank" rel="noopener">Smith Ex. W: Camus indictment, N.D. Cal. 3:08-cr-00231-MHP</a></li><li><a href="Smith_Ex_X_Camus_Judgment.pdf" target="_blank" rel="noopener">Smith Ex. X: Camus judgment</a></li></ul>
+  </div>
+</section>
+
+<section id="other">
+  <h2>Other matters</h2>
+  <div class="group">
+    <h3>Mooney (Rosas v. Kensington) <span class="count">(3)</span></h3>
+    <p class="sub">Court of Appeal opinions</p>
+    <ul class="doclist"><li><a href="Rosas_v_Kensington_2017_B270721.pdf" target="_blank" rel="noopener">Rosas I (Apr. 14, 2017, B270721)</a></li><li><a href="Rosas_v_Kensington_2019_B286505.pdf" target="_blank" rel="noopener">McMullen I (Mar. 26, 2019, B286505)</a></li><li><a href="Rosas_v_Kensington_2020_B299784.pdf" target="_blank" rel="noopener">Rosas v. Kensington (Dec. 29, 2020, B299784)</a></li></ul>
+  </div>
+  <div class="group">
+    <h3>Mays <span class="count">(2)</span></h3>
+    <ul class="doclist"><li><a href="Mays_Second_Amended_Complaint.pdf" target="_blank" rel="noopener">Second Amended Complaint in Mays v. Mortgage Management Consultants, LASC 19CHCV00654</a></li><li><a href="Mays_Bar_Complaint_Draft_2026-10-22.pdf" target="_blank" rel="noopener">Mays State Bar complaint (draft, Oct. 22, 2026)</a></li></ul>
+  </div>
+  <div class="group">
+    <h3>Jacobson <span class="count">(3)</span></h3>
+    <ul class="doclist"><li><a href="Armstrong_Ex_39_Jacobson_Deed.pdf" target="_blank" rel="noopener">Armstrong Ex. 39: deed, OC Recorder 2026000012999</a></li><li><a href="Armstrong_Ex_40_Letter_to_Jacobson.pdf" target="_blank" rel="noopener">Armstrong Ex. 40: Armstrong's letter to Jacobson, Feb. 28, 2026</a></li><li><a href="Armstrong_Ex_41_45_Jacobson.pdf" target="_blank" rel="noopener">Armstrong Exs. 41–45: Jacobson subpoena papers and motion to quash</a></li></ul>
+  </div>
+  <div class="group">
+    <h3>Meza <span class="count">(1)</span></h3>
+    <ul class="doclist"><li><a href="Armstrong_Ex_46_47_Meza_Orders.pdf" target="_blank" rel="noopener">Armstrong Decl. Exs. 46–47: orders in LASC 19STCV34911</a></li></ul>
+  </div>
+  <div class="group">
+    <h3>Choe <span class="count">(1)</span></h3>
+    <ul class="doclist"><li><a href="Choe_Decl.pdf" target="_blank" rel="noopener">Declaration of Simon Choe (Sept. 23, 2026), with Third Amended Complaint</a></li></ul>
+  </div>
+  <div class="group">
+    <h3>Flores and Brin <span class="count">(2)</span></h3>
+    <ul class="doclist"><li><a href="Flores_Bar_Complaint.pdf" target="_blank" rel="noopener">Johnny Flores State Bar complaint (26-O-18209)</a></li><li><a href="Brin_Bar_Complaint.pdf" target="_blank" rel="noopener">Stella Brin State Bar complaint (Sept. 5, 2025)</a></li></ul>
+  </div>
+  <div class="group">
+    <h3>Edison Castro <span class="count">(1)</span></h3>
+    <ul class="doclist"><li><a href="Steven_E_Smith_State_Bar_10-J-02206.pdf" target="_blank" rel="noopener">State Bar Court 10-J-02206: Steven E. Smith stipulation (2010)</a></li></ul>
+  </div>
+</section>
+
+<footer>
+  <p class="small">Excerpts of the filed documents. Bank account numbers, phone numbers and private home addresses are blacked out. Ms. Canson's medical records (Smith Ex. E) are not posted. These documents contain allegations; most have not been decided by any court.</p>
+  <p class="small"><a href="../">Canson case</a> · <a href="../other-matters/">Other matters</a></p>
+</footer>
+</div>
+
+</body>
+</html>
